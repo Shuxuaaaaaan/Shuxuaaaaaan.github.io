@@ -44,4 +44,4 @@ console.log(greet('World'));
 
 ---
 
-感谢阅读！[返回首页](./index.html)
+感谢阅读！

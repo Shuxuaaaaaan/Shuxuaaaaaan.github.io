@@ -26,6 +26,3 @@ Shuxuan负责叽里咕噜描绘想象，Gemini&Claude&ChatGPT负责干活()
 4. 零框架，极致性能，适配GitHub Pages
 5. 极简设计，大间距排版
 
----
-
-[返回首页](./index.html)

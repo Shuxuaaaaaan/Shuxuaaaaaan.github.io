@@ -42,7 +42,7 @@
 
 /* Headings */
 .markdown-body h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 800;
     margin: 0 0 24px;
     letter-spacing: -0.02em;
@@ -50,7 +50,7 @@
 }
 
 .markdown-body h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
     margin: 48px 0 16px;
     padding-bottom: 8px;
@@ -59,7 +59,7 @@
 }
 
 .markdown-body h3 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 600;
     margin: 36px 0 12px;
 }
@@ -67,7 +67,7 @@
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     margin: 28px 0 8px;
     color: var(--text-secondary);
