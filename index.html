@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shuxuan — 个人主页</title>
+  <meta name="description" content="Shuxuan 的个人主页 — 文章、作品与随想。" />
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/index.css" />
+  <!-- Inline critical theme script to avoid FOUC -->
+  <script src="./js/theme.js"></script>
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="./index.html" class="site-header__logo">Shuxuan</a>
+      <nav class="site-header__nav">
+        <a href="#about">关于</a>
+        <a href="#articles">文章</a>
+        <a href="#projects">作品</a>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题">
+          <!-- Sun icon (shown in dark mode) -->
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== Hero ========== -->
+  <section class="hero">
+    <h1 class="hero__greeting">你好，我是 Shuxuan 👋</h1>
+    <p class="hero__subtitle">喜欢探索技术与设计的交汇点，记录想法，构建有趣的东西。</p>
+  </section>
+
+  <!-- ========== About ========== -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section__title fade-up">关于我</h2>
+      <div class="about__content fade-up">
+        <p>
+          我是一名热衷于前端技术与创意编程的开发者。相信简洁的设计中蕴含着力量，
+          好的作品不需要多余的装饰——每一行代码、每一个像素都应当有其存在的理由。
+        </p>
+        <p>
+          工作之余，我喜欢阅读、摄影和探索新工具。这个小站是我整理思绪、分享技术笔记和展示个人作品的地方。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Articles ========== -->
+  <section id="articles" class="section">
+    <div class="container">
+      <h2 class="section__title fade-up">文章</h2>
+      <div class="scroll-track" id="articles-track">
+        <a href="./post.html?path=articles/articles-test.md" class="card">
+          <span class="card__tag">笔记</span>
+          <h3 class="card__title">文章示例：Hello World</h3>
+          <p class="card__desc">这是一篇测试文章，用来验证 Markdown 渲染引擎是否正常工作。</p>
+        </a>
+        <a href="./post.html?path=articles/articles-test.md" class="card">
+          <span class="card__tag">技术</span>
+          <h3 class="card__title">CSS Scroll Snap 使用指南</h3>
+          <p class="card__desc">深入理解 CSS Scroll Snap 的各项属性与最佳实践。</p>
+        </a>
+        <a href="./post.html?path=articles/articles-test.md" class="card">
+          <span class="card__tag">随笔</span>
+          <h3 class="card__title">极简主义与数字生活</h3>
+          <p class="card__desc">关于信息过载时代中的减法思维与数字断舍离。</p>
+        </a>
+        <a href="./post.html?path=articles/articles-test.md" class="card">
+          <span class="card__tag">前端</span>
+          <h3 class="card__title">原生 JS 的 Dark Mode 实现</h3>
+          <p class="card__desc">无需任何框架，用最少的代码实现优雅的暗黑模式切换。</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Projects ========== -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="section__title fade-up">作品</h2>
+      <div class="scroll-track" id="projects-track">
+        <a href="./post.html?path=works/works-test.md" class="card">
+          <span class="card__tag">项目</span>
+          <h3 class="card__title">个人博客系统</h3>
+          <p class="card__desc">基于原生 HTML/CSS/JS 的极简静态博客，无框架依赖。</p>
+        </a>
+        <a href="./post.html?path=works/works-test.md" class="card">
+          <span class="card__tag">工具</span>
+          <h3 class="card__title">Markdown 编辑器</h3>
+          <p class="card__desc">在线双栏 Markdown 编辑器，支持实时预览与导出。</p>
+        </a>
+        <a href="./post.html?path=works/works-test.md" class="card">
+          <span class="card__tag">实验</span>
+          <h3 class="card__title">CSS 动画实验室</h3>
+          <p class="card__desc">收集并展示各种 CSS 动画效果与微交互。</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <p>© 2026 Shuxuan. All rights reserved.</p>
+  </footer>
+
+  <!-- ========== Scroll animations ========== -->
+  <script>
+    (function () {
+      'use strict';
+
+      // Intersection Observer for fade-up and card animations
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      // Observe all fade-up elements and cards
+      document.querySelectorAll('.fade-up, .card').forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+
+</body>
+</html>
