@@ -8,7 +8,8 @@ date: 2026-02-11
 # 个人主页系统
 
 一个基于原生 HTML/CSS/JS 的极简静态主页。
-由Shuxuan负责叽里咕噜，由Gemini&Claude负责干活。
+
+Shuxuan负责叽里咕噜描绘想象，Gemini&Claude&ChatGPT负责干活()
 
 ## 技术栈
 
