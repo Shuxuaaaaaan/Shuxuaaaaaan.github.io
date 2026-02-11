@@ -1,30 +1,29 @@
 ---
-title: 个人博客系统
-description: 基于原生 HTML/CSS/JS 的极简静态博客系统。
+title: 个人主页系统
+description: 基于原生 HTML/CSS/JS 的极简静态主页。
 tag: 项目
 date: 2026-02-11
 ---
 
-# 个人博客系统
+# 个人主页系统
 
-一个基于原生 HTML/CSS/JS 的极简静态博客系统。
+一个基于原生 HTML/CSS/JS 的极简静态主页。
+由Shuxuan负责叽里咕噜，由Gemini&Claude负责干活。
 
 ## 技术栈
 
-- **HTML5** — 语义化结构
-- **CSS3** — CSS 变量、Scroll Snap、玻璃拟态
-- **JavaScript** — 原生 ES6+，零依赖
-- **marked.js** — Markdown 解析
+- HTML5 — 语义化结构
+- CSS3 — CSS 变量、Scroll Snap、玻璃拟态
+- JavaScript — 原生 ES6+，零依赖
+- marked.js — Markdown 解析
 
 ## 特色
 
-1. 🌗 自动暗黑模式，支持手动切换
-2. 📱 完全响应式布局
-3. ⚡ 零框架，极致性能
-4. 🎨 极简设计，大间距排版
-
-> 好的设计是尽可能少的设计。
-> — Dieter Rams
+1. 自动暗黑模式，支持手动切换
+2. 完全响应式布局
+3. 自动更新文章、作品列表
+4. 零框架，极致性能，适配GitHub Pages
+5. 极简设计，大间距排版
 
 ---
 

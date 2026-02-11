@@ -46,15 +46,79 @@
    About Section
    =========================== */
 
-.about__content {
-    max-width: 640px;
-    font-size: 1.05rem;
-    line-height: 1.85;
-    color: var(--text-secondary);
+.about {
+    text-align: center;
 }
 
-.about__content p+p {
-    margin-top: 16px;
+.about__heading {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+}
+
+.about__divider {
+    width: 40px;
+    height: 3px;
+    background: #0078d4;
+    border-radius: 2px;
+    margin: 0 auto 36px;
+}
+
+.about__tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.about__tag {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 6px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    background: transparent;
+    transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.about__tag:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.about__lines {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.about__lines p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+}
+
+.about__lines p:last-child {
+    margin-bottom: 0;
+}
+
+.about__lines a {
+    color: #4caf50;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.25s ease;
+}
+
+.about__lines a:hover {
+    opacity: 0.8;
+}
+
+.about__lines .highlight {
+    color: #4caf50;
+    font-weight: 500;
 }
 
 /* ===========================
