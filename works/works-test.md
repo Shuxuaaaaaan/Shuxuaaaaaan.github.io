@@ -1,3 +1,10 @@
+---
+title: 个人博客系统
+description: 基于原生 HTML/CSS/JS 的极简静态博客系统。
+tag: 项目
+date: 2026-02-11
+---
+
 # 个人博客系统
 
 一个基于原生 HTML/CSS/JS 的极简静态博客系统。

@@ -2,7 +2,7 @@
  * renderer.js — Markdown fetcher & renderer for post.html
  *
  * Reads `?path=<relative-path-to-md>` from URL params,
- * fetches the .md file, and renders it with marked.js.
+ * fetches the .md file, strips frontmatter, and renders with marked.js.
  */
 
 (function () {
@@ -40,7 +40,26 @@
     }
 
     /**
-     * Extract an H1 title from markdown text.
+     * Parse and strip YAML-like frontmatter (--- delimited block).
+     * Returns { meta: {key: value}, body: "remaining markdown" }
+     */
+    function parseFrontmatter(text) {
+        const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+        if (!match) return { meta: {}, body: text };
+
+        const meta = {};
+        match[1].split(/\r?\n/).forEach(function (line) {
+            const idx = line.indexOf(':');
+            if (idx > 0) {
+                meta[line.slice(0, idx).trim()] = line.slice(idx + 1).trim();
+            }
+        });
+
+        return { meta: meta, body: match[2] };
+    }
+
+    /**
+     * Extract an H1 title from markdown text (fallback).
      */
     function extractTitle(md) {
         const match = md.match(/^#\s+(.+)$/m);
@@ -71,14 +90,17 @@
 
             const mdText = await response.text();
 
-            // Update page title
-            const heading = extractTitle(mdText);
+            // Parse frontmatter & strip it from body
+            const { meta, body } = parseFrontmatter(mdText);
+
+            // Update page title (frontmatter title > H1 > default)
+            const heading = meta.title || extractTitle(body);
             if (heading) {
                 titleEl.textContent = heading + ' — Shuxuan';
             }
 
-            // Render markdown
-            contentEl.innerHTML = marked.parse(mdText);
+            // Render markdown (without frontmatter)
+            contentEl.innerHTML = marked.parse(body);
 
         } catch (err) {
             console.error('Failed to load markdown:', err);
