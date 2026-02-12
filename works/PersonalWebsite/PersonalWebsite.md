@@ -1,9 +1,9 @@
 ---
 title: 个人主页系统
-description: 基于原生 HTML/CSS/JS 的极简静态主页。
+description: 基于原生 HTML/CSS/JS 的极简静态主页。部署在GitHub Pages，支持动态RSS更新。
 tag: 项目
 date: 2026-02-11
-rss: yes
+rss: no
 ---
 
 # 个人主页系统
@@ -26,5 +26,5 @@ Shuxuan负责叽里咕噜描绘想象，Gemini&Claude&ChatGPT负责干活()
 3. 自动更新文章、作品列表
 4. 零框架，极致性能，适配GitHub Pages
 5. 极简设计，大间距排版
-6. 自动生成RSS订阅
+6. 自动生成RSS订阅，可选RSS输出
 

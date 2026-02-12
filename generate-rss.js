@@ -13,7 +13,7 @@ const path = require('path');
 // ── Config ────────────────────────────────────────────────
 const SITE_URL = 'https://shuxuaaaaaan.github.io';
 const SITE_TITLE = 'Shuxuan';
-const SITE_DESCRIPTION = 'Shuxuan的个人主页 — 文章、作品与简介。';
+const SITE_DESCRIPTION = '';
 const DIRS = ['articles', 'works'];
 
 // ── Frontmatter parser ────────────────────────────────────
