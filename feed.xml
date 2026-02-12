@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shuxuan</title>
+    <link>https://shuxuaaaaaan.github.io</link>
+    <description>Shuxuan的个人主页 — 文章、作品与简介。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 12 Feb 2026 10:39:46 GMT</lastBuildDate>
+    <atom:link href="https://shuxuaaaaaan.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>实验室在线工作站</title>
+      <link>https://shuxuaaaaaan.github.io/post.html?path=works%2FLabOnlinePortal%2FLabOnlinePortal.md</link>
+      <description>AEDL在线工作站系统，一个集内容发布、资源存储、实验工具归集与设备远程监控于一体的在线平台。</description>
+      <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://shuxuaaaaaan.github.io/post.html?path=works%2FLabOnlinePortal%2FLabOnlinePortal.md</guid>
+    </item>
+    <item>
+      <title>个人主页系统</title>
+      <link>https://shuxuaaaaaan.github.io/post.html?path=works%2FPersonalWebsite%2FPersonalWebsite.md</link>
+      <description>基于原生 HTML/CSS/JS 的极简静态主页。</description>
+      <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://shuxuaaaaaan.github.io/post.html?path=works%2FPersonalWebsite%2FPersonalWebsite.md</guid>
+    </item>
+  </channel>
+</rss>
