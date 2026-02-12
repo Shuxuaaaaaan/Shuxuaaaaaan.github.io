@@ -155,24 +155,34 @@
         }
     }
 
-    // ── Shared tree cache (one API call for all sections) ─────
-    var _treePromise = null;
+    // ── Recursively list .md files via Contents API ────────────
+    async function fetchDirMdFiles(dir) {
+        var apiUrl = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + dir + '?ref=' + BRANCH;
+        var res = await fetch(apiUrl);
+        if (!res.ok) throw new Error('API ' + res.status);
+        var entries = await res.json();
 
-    function getRepoTree() {
-        if (_treePromise) return _treePromise;
+        var mdFiles = [];
+        var subDirs = [];
 
-        _treePromise = fetch(
-            'https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/trees/' + BRANCH + '?recursive=1'
-        )
-            .then(function (res) {
-                if (!res.ok) throw new Error('Tree API ' + res.status);
-                return res.json();
-            })
-            .then(function (data) {
-                return data.tree || [];
-            });
+        entries.forEach(function (entry) {
+            if (entry.type === 'file' && entry.name.endsWith('.md')) {
+                mdFiles.push(entry);
+            } else if (entry.type === 'dir') {
+                subDirs.push(entry.path);
+            }
+        });
 
-        return _treePromise;
+        // Recursively fetch subdirectories
+        var subResults = await Promise.all(subDirs.map(function (subDir) {
+            return fetchDirMdFiles(subDir);
+        }));
+
+        subResults.forEach(function (subFiles) {
+            mdFiles = mdFiles.concat(subFiles);
+        });
+
+        return mdFiles;
     }
 
     // ── Fetch a single section ────────────────────────────────
@@ -188,12 +198,8 @@
         showTrackLoading(trackId);
 
         try {
-            // 1. Get full repo tree (recursive) and filter .md files under dir/
-            var tree = await getRepoTree();
-            var prefix = dir + '/';
-            var mdFiles = tree.filter(function (node) {
-                return node.type === 'blob' && node.path.startsWith(prefix) && node.path.endsWith('.md');
-            });
+            // 1. Recursively list .md files under dir/
+            var mdFiles = await fetchDirMdFiles(dir);
 
             // 2. Fetch raw content & parse frontmatter (in parallel)
             var items = await Promise.all(mdFiles.map(async function (f) {
