@@ -227,6 +227,13 @@
     align-self: flex-start;
 }
 
+.card__date {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: auto;
+    opacity: 0.7;
+}
+
 /* Stagger children */
 .card:nth-child(1) {
     transition-delay: 0.05s;

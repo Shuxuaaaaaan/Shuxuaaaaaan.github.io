@@ -3,10 +3,15 @@
  *
  * Reads `?path=<relative-path-to-md>` from URL params,
  * fetches the .md file, strips frontmatter, and renders with marked.js.
+ * Resolves relative image/link paths based on the md file's directory.
  */
 
 (function () {
     'use strict';
+
+    var OWNER = 'Shuxuaaaaaan';
+    var REPO = 'Shuxuaaaaaan.github.io';
+    var BRANCH = 'main';
 
     const contentEl = document.getElementById('post-content');
     const titleEl = document.querySelector('title');
@@ -67,6 +72,18 @@
     }
 
     /**
+     * Resolve a potentially relative URL against the md file's raw directory.
+     */
+    function resolveUrl(href, baseDir) {
+        // Already absolute
+        if (/^https?:\/\//.test(href) || href.startsWith('//')) return href;
+        // Data URIs
+        if (href.startsWith('data:')) return href;
+        // Resolve relative path
+        return baseDir + '/' + href.replace(/^\.\//, '');
+    }
+
+    /**
      * Main entry — fetch and render.
      */
     async function init() {
@@ -81,7 +98,15 @@
         showLoading();
 
         try {
-            const response = await fetch(mdPath);
+            // Build raw URL and base directory for relative path resolution
+            var rawBase = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/';
+            var rawUrl = rawBase + mdPath;
+            // Directory containing the md file (for resolving relative images)
+            var pathParts = mdPath.split('/');
+            pathParts.pop(); // remove filename
+            var rawDir = rawBase + pathParts.join('/');
+
+            const response = await fetch(rawUrl);
 
             if (!response.ok) {
                 showError('找不到该文章，请检查链接是否正确。');
@@ -99,8 +124,26 @@
                 titleEl.textContent = heading + ' — Shuxuan';
             }
 
+            // Custom renderer to resolve relative image/link paths
+            const renderer = new marked.Renderer();
+            renderer.image = function (token) {
+                var src = resolveUrl(token.href, rawDir);
+                var alt = token.text || '';
+                var titleAttr = token.title ? ' title="' + token.title + '"' : '';
+                return '<img src="' + src + '" alt="' + alt + '"' + titleAttr + ' />';
+            };
+
+            var originalLink = new marked.Renderer().link;
+            renderer.link = function (token) {
+                // Only resolve links that look like relative file paths
+                if (token.href && !token.href.startsWith('#') && !/^https?:\/\//.test(token.href) && !token.href.startsWith('//')) {
+                    token.href = resolveUrl(token.href, rawDir);
+                }
+                return originalLink.call(this, token);
+            };
+
             // Render markdown (without frontmatter)
-            contentEl.innerHTML = marked.parse(body);
+            contentEl.innerHTML = marked.parse(body, { renderer: renderer });
 
         } catch (err) {
             console.error('Failed to load markdown:', err);
@@ -115,3 +158,4 @@
         init();
     }
 })();
+

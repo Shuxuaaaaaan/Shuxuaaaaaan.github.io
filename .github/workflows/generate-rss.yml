@@ -1,0 +1,34 @@
+name: Generate RSS Feed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'articles/**'
+      - 'works/**'
+      - 'generate-rss.js'
+
+jobs:
+  build-rss:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate RSS feed
+        run: node generate-rss.js
+
+      - name: Commit and push feed.xml
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feed.xml
+          git diff --cached --quiet && echo "No changes to feed.xml" || (git commit -m "chore: auto-update feed.xml" && git push)

@@ -2,7 +2,7 @@
  * cards.js — Auto-discover markdown files via GitHub API & render cards
  *
  * Flow:
- *   1. Call GitHub Contents API to list .md files in articles/ and works/
+ *   1. Call GitHub Trees API (recursive) to list all .md files
  *   2. Fetch raw content from raw.githubusercontent.com
  *   3. Parse YAML-like frontmatter (title, description, tag, date)
  *   4. Render cards into scroll tracks, sorted by date descending
@@ -77,9 +77,15 @@
         desc.className = 'card__desc';
         desc.textContent = item.description || '';
 
+        // Date element
+        var date = document.createElement('span');
+        date.className = 'card__date';
+        date.textContent = item.date || '';
+
         a.appendChild(tag);
         a.appendChild(title);
         a.appendChild(desc);
+        a.appendChild(date);
 
         return a;
     }
@@ -149,6 +155,26 @@
         }
     }
 
+    // ── Shared tree cache (one API call for all sections) ─────
+    var _treePromise = null;
+
+    function getRepoTree() {
+        if (_treePromise) return _treePromise;
+
+        _treePromise = fetch(
+            'https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/trees/' + BRANCH + '?recursive=1'
+        )
+            .then(function (res) {
+                if (!res.ok) throw new Error('Tree API ' + res.status);
+                return res.json();
+            })
+            .then(function (data) {
+                return data.tree || [];
+            });
+
+        return _treePromise;
+    }
+
     // ── Fetch a single section ────────────────────────────────
     async function fetchSection(dir, trackId) {
         var cacheKey = 'cards_' + dir;
@@ -162,15 +188,11 @@
         showTrackLoading(trackId);
 
         try {
-            // 1. List files via GitHub Contents API
-            var apiUrl = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + dir + '?ref=' + BRANCH;
-            var listRes = await fetch(apiUrl);
-
-            if (!listRes.ok) throw new Error('API ' + listRes.status);
-
-            var files = await listRes.json();
-            var mdFiles = files.filter(function (f) {
-                return f.type === 'file' && f.name.endsWith('.md');
+            // 1. Get full repo tree (recursive) and filter .md files under dir/
+            var tree = await getRepoTree();
+            var prefix = dir + '/';
+            var mdFiles = tree.filter(function (node) {
+                return node.type === 'blob' && node.path.startsWith(prefix) && node.path.endsWith('.md');
             });
 
             // 2. Fetch raw content & parse frontmatter (in parallel)
@@ -180,7 +202,7 @@
                 var text = await rawRes.text();
                 var meta = parseFrontmatter(text);
                 return {
-                    title: meta.title || f.name.replace('.md', ''),
+                    title: meta.title || f.path.split('/').pop().replace('.md', ''),
                     description: meta.description || '',
                     tag: meta.tag || '',
                     date: meta.date || '',

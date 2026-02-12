@@ -3,6 +3,7 @@ title: Hello World
 description: 这是一篇测试文章，用于验证 Markdown 渲染引擎。
 tag: 笔记
 date: 2026-02-11
+rss: no
 ---
 
 # Hello World 
@@ -40,7 +41,7 @@ console.log(greet('World'));
 | --- | --- |
 | 暗黑模式 | ✅ |
 | Markdown 渲染 | ✅ |
-| 横向滚动卡片 | ✅ |
+| 自适应卡片 | ✅ |
 
 ---
 
