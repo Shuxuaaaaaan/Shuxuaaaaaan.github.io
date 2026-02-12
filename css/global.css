@@ -240,14 +240,14 @@ button {
 .site-footer__links {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-top: 12px;
+    gap: 32px;
+    margin-top: 24px;
 }
 
 .site-footer__link {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     transition: color 0.25s ease;
 }
 
@@ -260,7 +260,7 @@ button {
 }
 
 .site-footer__status {
-    margin-top: 20px;
+    margin-top: 32px;
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
     font-size: 0.75rem;
     letter-spacing: 0.02em;
