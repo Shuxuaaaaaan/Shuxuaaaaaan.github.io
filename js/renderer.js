@@ -144,17 +144,23 @@
                 }
             }
 
-            // Enable Footnote extension
-            marked.use(markedFootnote());
+            // Enable extensions if available
+            if (typeof markedFootnote === 'function') {
+                marked.use(markedFootnote());
+            }
 
             // Enable KaTeX extension
             if (typeof markedKatex !== 'undefined') {
-                marked.use(markedKatex({
-                    throwOnError: false
-                }));
+                const katexExt = (typeof markedKatex === 'function') ? markedKatex : markedKatex.default;
+                if (katexExt) {
+                    marked.use(katexExt({
+                        throwOnError: false,
+                        nonStandard: true
+                    }));
+                }
             }
 
-            // Custom renderer to resolve relative image/link paths
+            // Custom renderer instance (traditional way)
             const renderer = new marked.Renderer();
             renderer.image = function (token) {
                 var src = resolveUrl(token.href, rawDir);
@@ -163,13 +169,18 @@
                 return '<img src="' + src + '" alt="' + alt + '"' + titleAttr + ' />';
             };
 
-            var originalLink = new marked.Renderer().link;
             renderer.link = function (token) {
                 // Only resolve links that look like relative file paths
                 if (token.href && !token.href.startsWith('#') && !/^https?:\/\//.test(token.href) && !token.href.startsWith('//')) {
                     token.href = resolveUrl(token.href, rawDir);
                 }
-                return originalLink.call(this, token);
+                
+                // Fallback to original link renderer if possible, or reconstruct
+                try {
+                    return marked.Renderer.prototype.link.call(this, token);
+                } catch (e) {
+                    return '<a href="' + token.href + '"' + (token.title ? ' title="' + token.title + '"' : '') + '>' + token.text + '</a>';
+                }
             };
 
             // Render markdown (without frontmatter)

@@ -28,12 +28,13 @@
     // Synchronize with anchor links (optional, Lenis handles this by default usually)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
             const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
+            // If the href is just # or it's been changed by JS to a real URL, don't intercept
+            if (!targetId || !targetId.startsWith('#') || targetId === '#') return;
             
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
+                e.preventDefault();
                 lenis.scrollTo(targetElement, {
                     offset: -100, // Matching scroll-padding-top in CSS
                     duration: 1.5,
