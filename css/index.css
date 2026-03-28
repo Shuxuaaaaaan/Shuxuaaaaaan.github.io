@@ -10,7 +10,11 @@
     justify-content: center;
     text-align: center;
     padding: 0 24px;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 0;
     overflow: hidden;
 }
 
@@ -64,19 +68,37 @@
 
 .about {
     text-align: left;
-    background: var(--bg-about);
-    padding: 80px 24px;
+    background: var(--bg-primary);
+    padding: 60px 24px;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.section:not(.about) {
+    background: var(--bg-about);
+    padding: 60px 0;
+}
+
+/* Ensure sections cover the fixed hero */
+.section, 
+.about,
+.site-footer {
+    position: relative;
+    z-index: 2;
+}
+
+/* Spacer for the first section after hero */
+#articles {
+    margin-top: 100vh;
+}
+
 .about__heading {
     font-size: clamp(2rem, 5vw, 2.8rem);
     font-weight: 900;
     letter-spacing: -0.04em;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     text-align: left;
     text-transform: uppercase;
     color: var(--text-primary);
@@ -86,7 +108,7 @@
     width: 60px;
     height: 4px;
     background: var(--primary, #005bc1);
-    margin-bottom: 48px;
+    margin-bottom: 32px;
     border-radius: 2px;
 }
 
@@ -101,14 +123,13 @@
 /* Card Base Styles */
 .bento-card {
     border-radius: 20px;
-    padding: 24px;
+    padding: 18px;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-                box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transition: box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
                 background-color 0.4s ease;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -116,7 +137,6 @@
 }
 
 .bento-card:hover {
-    transform: translateY(-8px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
 }
 
@@ -142,17 +162,19 @@
 .bento-card--dark .bento-card__text { color: #a0a0a0; }
 
 .bento-card--surface {
-    background: var(--bg-primary);
+    background: var(--bg-card);
 }
 
 /* Grid Spanning Utilities */
 /* Horizontal Spans */
 .col-span-12 { grid-column: span 12; }
+.col-span-10 { grid-column: span 10; }
 .col-span-9 { grid-column: span 9; }
 .col-span-8 { grid-column: span 8; }
 .col-span-6 { grid-column: span 6; }
 .col-span-4 { grid-column: span 4; }
 .col-span-3 { grid-column: span 3; }
+.col-span-2 { grid-column: span 2; }
 
 /* Vertical Spans & Heights */
 .row-span-2 { grid-row: span 2; }
@@ -196,8 +218,9 @@
 .bento-card--hero {
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    gap: 40px;
+    justify-content: flex-start;
+    padding: 40px;
+    gap: 48px;
 }
 
 .hero-huge-title {
@@ -206,6 +229,34 @@
     line-height: 0.95;
     letter-spacing: -0.05em;
     margin: 16px 0;
+}
+
+.hero-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.hero-contact__link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.hero-contact__link:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.hero-contact__icon {
+    width: 18px;
+    height: 18px;
 }
 
 .avatar-placeholder {
@@ -217,14 +268,86 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    position: relative;
 }
 
-.avatar-placeholder::after {
+.avatar-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-placeholder:not(:has(img))::after {
     content: 'PERSON';
     font-family: 'Material Symbols Outlined';
     font-size: 80px;
     opacity: 0.25;
     color: #fff;
+}
+
+/* Education List & Cards */
+.education-list {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.education-card {
+    position: relative;
+    padding: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.education-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.education-card__bg {
+    position: absolute;
+    top: 50%;
+    right: -10%;
+    transform: translateY(-50%);
+    height: 120%;
+    opacity: 0.08;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.education-card:hover .education-card__bg {
+    opacity: 0.12;
+}
+
+.education-card__year {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #646464;
+    margin-bottom: 4px;
+}
+
+.education-card__school {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.education-card__desc {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
 }
 
 /* Skills Layout & Category Styles */
@@ -389,7 +512,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 32px;
-    padding: 16px 0 40px;
+    padding: 16px 0 24px;
 }
 
 @media (max-width: 1200px) {
@@ -411,7 +534,7 @@
    =========================== */
 
 .card {
-    background: var(--bg-card);
+    background: var(--bg-primary);
     border-radius: 12px;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-card);
@@ -586,9 +709,9 @@
    =========================== */
 .load-more-btn {
     display: block;
-    margin: 32px auto 0;
+    margin: 24px auto 0;
     padding: 12px 28px;
-    background: var(--bg-card);
+    background: var(--bg-primary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     color: var(--text-primary);
