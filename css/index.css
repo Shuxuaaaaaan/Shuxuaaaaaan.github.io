@@ -1,0 +1,606 @@
+/* ===========================
+   Hero Section
+   =========================== */
+
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+#hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero__greeting,
+.hero__subtitle {
+    position: relative;
+    z-index: 1;
+}
+
+.hero__greeting {
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(32px);
+    animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.hero__subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--text-secondary);
+    font-weight: 400;
+    max-width: 520px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+@keyframes heroFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===========================
+   About Section - Bento Grid v3 (Skills & Research)
+   =========================== */
+
+.about {
+    text-align: left;
+    background: var(--bg-about);
+    padding: 80px 24px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about__heading {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--text-primary);
+}
+
+.about__divider {
+    width: 60px;
+    height: 4px;
+    background: var(--primary, #005bc1);
+    margin-bottom: 48px;
+    border-radius: 2px;
+}
+
+/* Bento Grid Layout - 12 Columns */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 16px;
+}
+
+/* Card Base Styles */
+.bento-card {
+    border-radius: 20px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.4s ease;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.bento-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+/* Theme Variatons */
+.bento-card--primary {
+    background: #005bc1;
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 12px 64px rgba(0, 91, 193, 0.15);
+}
+
+.bento-card--primary .bento-card__label { color: rgba(255, 255, 255, 0.6); }
+.bento-card--primary .bento-card__title { color: #ffffff; }
+.bento-card--primary .bento-card__text { color: rgba(255, 255, 255, 0.85); }
+
+.bento-card--dark {
+    background: #1a1c1c;
+    color: #ffffff;
+    border: none;
+}
+
+.bento-card--dark .bento-card__label { color: #646464; }
+.bento-card--dark .bento-card__text { color: #a0a0a0; }
+
+.bento-card--surface {
+    background: var(--bg-primary);
+}
+
+/* Grid Spanning Utilities */
+/* Horizontal Spans */
+.col-span-12 { grid-column: span 12; }
+.col-span-9 { grid-column: span 9; }
+.col-span-8 { grid-column: span 8; }
+.col-span-6 { grid-column: span 6; }
+.col-span-4 { grid-column: span 4; }
+.col-span-3 { grid-column: span 3; }
+
+/* Vertical Spans & Heights */
+.row-span-2 { grid-row: span 2; }
+
+/* Height modifiers */
+.bento-card--short {
+    min-height: 140px;
+    padding: 24px 36px;
+}
+
+/* Inner Content Styles */
+.bento-card__label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+.bento-card__title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.bento-card--primary .bento-card__title {
+    color: #ffffff;
+}
+
+.bento-card__text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* Hero Heading Layout */
+.bento-card--hero {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.hero-huge-title {
+    font-size: clamp(3rem, 10vw, 5.2rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    margin: 16px 0;
+}
+
+.avatar-placeholder {
+    width: clamp(160px, 20vw, 260px);
+    aspect-ratio: 1;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-placeholder::after {
+    content: 'PERSON';
+    font-family: 'Material Symbols Outlined';
+    font-size: 80px;
+    opacity: 0.25;
+    color: #fff;
+}
+
+/* Skills Layout & Category Styles */
+.skills-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.skill-category {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ===========================
+   Unified Bento UI Components
+   =========================== */
+
+.bento-tag,
+.skill-tag {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    color: var(--text-secondary);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    cursor: default;
+    display: inline-block;
+}
+
+.bento-tag:hover,
+.skill-tag:hover {
+    background: #005bc1;
+    color: #ffffff;
+    border-color: #005bc1;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 91, 193, 0.2);
+}
+
+.bento-cat {
+    margin-bottom: 20px;
+}
+
+.bento-cat:last-child {
+    margin-bottom: 0;
+}
+
+.bento-cat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.bento-cat-header__icon {
+    width: 20px;
+    height: 20px;
+    color: #005bc1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.bento-icon {
+    width: 32px;
+    height: 32px;
+    color: #005bc1;
+    flex-shrink: 0;
+}
+
+.bento-cat-header__title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+/* ===========================
+   Research / Learning Items
+   =========================== */
+
+.research-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 16px;
+}
+
+.research-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.research-item__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.research-item__icon {
+    font-size: 22px;
+    color: #005bc1;
+    display: flex;
+    align-items: center;
+}
+
+.research-item__title {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.research-item__desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 1024px) {
+    .bento-card--hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 32px;
+    }
+    .col-span-8, .col-span-6, .col-span-4 {
+        grid-column: span 12;
+    }
+    .skill-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .bento-card {
+        padding: 32px 24px;
+    }
+    .skill-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===========================
+   Card Grid
+   =========================== */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding: 16px 0 40px;
+}
+
+@media (max-width: 1200px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* ===========================
+   Card
+   =========================== */
+
+.card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    z-index: 1;
+
+    /* Fade-in animation */
+    opacity: 0;
+    transform: translateY(20px) translateZ(0);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease;
+    will-change: transform;
+}
+
+/* Pseudo element for GPU-accelerated hover shadow */
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    box-shadow: var(--shadow-card-hover);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.card:hover {
+    transform: translateY(-4px) translateZ(0);
+}
+
+.card:hover::after {
+    opacity: 1;
+}
+
+.card:hover .card__title {
+    color: var(--text-primary);
+}
+
+.card.visible {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+}
+
+.card.visible:hover {
+    transform: translateY(-4px) translateZ(0);
+}
+
+.card.visible:hover::after {
+    opacity: 1;
+}
+
+.card__cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--tag-bg);
+    border-radius: 12px 12px 0 0;
+}
+
+.card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.card__content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.card__title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.card__desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    flex: 1;
+}
+
+.card__tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--tag-bg);
+    color: var(--text-secondary);
+    align-self: flex-start;
+}
+
+.card__date {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: auto;
+    opacity: 0.7;
+}
+
+/* Stagger children initial entrance specifically for opacity and transform */
+.card:nth-child(6n+1) {
+    transition-delay: 0.05s, 0.05s, 0s, 0s, 0s;
+}
+
+.card:nth-child(6n+2) {
+    transition-delay: 0.10s, 0.10s, 0s, 0s, 0s;
+}
+
+.card:nth-child(6n+3) {
+    transition-delay: 0.15s, 0.15s, 0s, 0s, 0s;
+}
+
+.card:nth-child(6n+4) {
+    transition-delay: 0.20s, 0.20s, 0s, 0s, 0s;
+}
+
+.card:nth-child(6n+5) {
+    transition-delay: 0.25s, 0.25s, 0s, 0s, 0s;
+}
+
+.card:nth-child(6n) {
+    transition-delay: 0.30s, 0.30s, 0s, 0s, 0s;
+}
+
+/* Remove delayed response on hover */
+.card.visible:hover {
+    transition-delay: 0s, 0s, 0s, 0s, 0s;
+}
+
+
+/* ===========================
+   Responsive
+   =========================== */
+
+@media (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .section {
+        padding: 56px 0;
+    }
+
+    .section__title {
+        margin-bottom: 20px;
+    }
+}
+
+/* ===========================
+   Load More Button
+   =========================== */
+.load-more-btn {
+    display: block;
+    margin: 32px auto 0;
+    padding: 12px 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-card);
+}
+
+.load-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+    color: var(--text-primary);
+}

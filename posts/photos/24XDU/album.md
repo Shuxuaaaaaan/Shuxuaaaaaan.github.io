@@ -1,0 +1,85 @@
+---
+title: 残夏入梦 碎金沉影
+description: 2024 摄于西安电子科技大学
+tag: 摄影
+date: 2026-03-23
+cover: DSC09203.jpg
+---
+
+2024摄于西安电子科技大学
+
+在西电的第一个学期
+
+<!-- PHOTOS_START -->
+
+![DSC07465](./DSC07465.jpg)
+
+![DSC07475](./DSC07475.jpg)
+
+![DSC07479](./DSC07479.jpg)
+
+![DSC07486](./DSC07486.jpg)
+
+![DSC07488](./DSC07488.jpg)
+
+![DSC07500](./DSC07500.jpg)
+
+![DSC07524](./DSC07524.jpg)
+
+![DSC07525](./DSC07525.jpg)
+
+![DSC07526](./DSC07526.jpg)
+
+![DSC07528](./DSC07528.jpg)
+
+![DSC07540](./DSC07540.jpg)
+
+![DSC07553](./DSC07553.jpg)
+
+![DSC07556](./DSC07556.jpg)
+
+![DSC07559](./DSC07559.jpg)
+
+![DSC07560](./DSC07560.jpg)
+
+![DSC07588](./DSC07588.jpg)
+
+![DSC07590](./DSC07590.jpg)
+
+![DSC07744](./DSC07744.jpg)
+
+![DSC07747](./DSC07747.jpg)
+
+![DSC09117](./DSC09117.jpg)
+
+![DSC09119](./DSC09119.jpg)
+
+![DSC09124](./DSC09124.jpg)
+
+![DSC09139](./DSC09139.jpg)
+
+![DSC09141](./DSC09141.jpg)
+
+![DSC09142](./DSC09142.jpg)
+
+![DSC09157](./DSC09157.jpg)
+
+![DSC09160](./DSC09160.jpg)
+
+![DSC09190](./DSC09190.jpg)
+
+![DSC09197](./DSC09197.jpg)
+
+![DSC09203](./DSC09203.jpg)
+
+![DSC09209](./DSC09209.jpg)
+
+![DSC09210](./DSC09210.jpg)
+
+![DSC09223](./DSC09223.jpg)
+
+![DSC09227](./DSC09227.jpg)
+
+![DSC09236](./DSC09236.jpg)
+
+<!-- PHOTOS_END -->

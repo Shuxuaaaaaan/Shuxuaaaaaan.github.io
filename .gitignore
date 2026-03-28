@@ -1,0 +1,19 @@
+# Local scripts
+local_preview.py
+compress_images.py
+cleanup_albums.py
+update_photos.py
+generate_rss.py
+build.py
+
+.venv/
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
+.obsidian
+
+# RSS
+*.rss

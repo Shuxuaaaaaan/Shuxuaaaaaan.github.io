@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shuxuan — 个人主页</title>
+  <meta name="description" content="Shuxuan的个人主页 — 文章、作品与简介。" />
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/global.css?v4" />
+  <link rel="stylesheet" href="./css/index.css?v4" />
+  <!-- RSS auto-discovery -->
+  <link rel="alternate" type="application/rss+xml" title="Shuxuan RSS" href="./feed.xml" />
+  <!-- Inline critical theme script to avoid FOUC -->
+  <script src="./js/theme.js"></script>
+</head>
+
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="./index.html" class="site-header__logo">Shuxuan</a>
+      <nav class="site-header__nav">
+        <a href="#about">关于</a>
+        <a href="#articles">文章</a>
+        <a href="#projects">作品</a>
+        <a href="#photos">相册</a>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题">
+          <!-- Sun icon (shown in dark mode) -->
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== Hero ========== -->
+  <section class="hero">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <h1 class="hero__greeting">🌌AD ASTRA PER ASPERA.</h1>
+    <p class="hero__subtitle">泥嚎! 这里是Shuxuan的主页~</p>
+  </section>
+
+  <!-- ========== About ========== -->
+  <section id="about" class="section about">
+    <div class="container">
+      <h2 class="about__heading fade-up">关于</h2>
+      <div class="about__divider fade-up"></div>
+
+      <div class="bento-grid fade-up">
+        <!-- Row 1: About Me (8) + Education (4) -->
+        <div class="bento-card col-span-8 bento-card--hero bento-card--primary">
+          <div class="hero-content">
+            <div class="bento-card__label"> </div>
+            <h3 class="hero-huge-title">About<br>Me.</h3>
+            <div class="bento-card__text" style="font-weight: 500;">嗨，我是 Shuxuan 👋<br>一名专注于嵌入式开发、硬件设计与系统软件的学习者。</div>
+          </div>
+          <div class="avatar-placeholder">
+            <!-- This is where your photo goes -->
+          </div>
+        </div>
+
+        <div class="bento-card col-span-4 bento-card--surface">
+          <div class="bento-card__label">Education</div>
+          <div class="bento-card__title">教育背景</div>
+          <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="margin-bottom: 8px;">
+              <p style="font-size: 0.75rem; font-weight: 800; color: #646464; margin-bottom: 4px;">2024 至今</p>
+              <h4 style="font-weight: 700; font-size: 1.05rem;">西安电子科技大学</h4>
+              <p style="color: var(--text-secondary); font-size: 0.85rem;">测控技术与仪器 本科</p>
+            </div>
+            <div>
+              <p style="font-size: 0.75rem; font-weight: 800; color: #646464; margin-bottom: 4px;">2021 - 2024</p>
+              <h4 style="font-weight: 700; font-size: 1.05rem;">西北师范大学附属中学</h4>
+              <p style="color: var(--text-secondary); font-size: 0.85rem;">高中</p>
+            </div>
+          </div>
+          <div style="margin-top: auto; display: flex; justify-content: flex-end;">
+            <svg class="bento-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#005bc1;">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Row 2: Skills (6) + Learning (6) -->
+        <div class="bento-card col-span-6 bento-card--surface">
+          <div class="bento-card__label">Technical Skills</div>
+          <div class="bento-card__title">专业技能</div>
+          <div class="skills-container" style="margin-top: 20px;">
+            <!-- 嵌入式 -->
+            <div class="bento-cat">
+              <div class="bento-cat-header">
+                <svg class="bento-cat-header__icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                  <path d="M9 9h6v6H9z"></path>
+                  <path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"></path>
+                </svg>
+                <span class="bento-cat-header__title">嵌入式</span>
+              </div>
+              <div class="tag-cloud">
+                <span class="bento-tag">Arduino</span>
+                <span class="bento-tag">STM32</span>
+                <span class="bento-tag">TImsp</span>
+                <span class="bento-tag">ESP32</span>
+                <span class="bento-tag">Raspberry Pi</span>
+                <span class="bento-tag">Zynq SoC</span>
+              </div>
+            </div>
+            <!-- 硬件 -->
+            <div class="bento-cat">
+              <div class="bento-cat-header">
+                <svg class="bento-cat-header__icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v2M12 20v2M2 12h2M20 12h2M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
+                </svg>
+                <span class="bento-cat-header__title">硬件</span>
+              </div>
+              <div class="tag-cloud">
+                <span class="bento-tag">Altium Designer</span>
+                <span class="bento-tag">嘉立创LCEDA</span>
+                <span class="bento-tag">Solidworks Design</span>
+                <span class="bento-tag">Multisim</span>
+                <span class="bento-tag">AMD Vivado</span>
+              </div>
+            </div>
+            <!-- 软件 -->
+            <div class="bento-cat">
+              <div class="bento-cat-header">
+                <svg class="bento-cat-header__icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span class="bento-cat-header__title">软件</span>
+              </div>
+              <div class="tag-cloud">
+                <span class="bento-tag">C</span>
+                <span class="bento-tag">Python</span>
+                <span class="bento-tag">FreeRTOS</span>
+                <span class="bento-tag">Linux</span>
+                <span class="bento-tag">AMD Vitis</span>
+                <span class="bento-tag">CubeMX toolkit</span>
+                <span class="bento-tag">OpenCV</span>
+                <span class="bento-tag">OpenMV</span>
+                <span class="bento-tag">Intel OpenVINO</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Learning Directions (6) -->
+        <div class="bento-card col-span-6 bento-card--surface">
+          <div class="bento-card__label">Learning Directions</div>
+          <div class="bento-card__title">学习方向</div>
+          <div class="skills-container" style="margin-top: 20px;">
+            <div class="bento-cat">
+              <div class="bento-cat-header">
+                <svg class="bento-cat-header__icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="16" x2="6" y2="12"></line>
+                  <line x1="18" y1="16" x2="18" y2="8"></line>
+                </svg>
+                <span class="bento-cat-header__title">电子电路技术</span>
+              </div>
+              <div class="tag-cloud">
+                <span class="bento-tag">模拟与数字电路</span>
+                <span class="bento-tag">电磁场与电磁波</span>
+                <span class="bento-tag">射频电路</span>
+                <span class="bento-tag">电子测量与电磁兼容</span>
+                <span class="bento-tag">传感技术与信号调理</span>
+              </div>
+            </div>
+            <div class="bento-cat">
+              <div class="bento-cat-header">
+                <svg class="bento-cat-header__icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="8" rx="2"></rect>
+                  <rect x="2" y="14" width="20" height="8" rx="2"></rect>
+                  <line x1="6" y1="10" x2="6" y2="14"></line>
+                  <line x1="18" y1="10" x2="18" y2="14"></line>
+                </svg>
+                <span class="bento-cat-header__title">软件技术</span>
+              </div>
+              <div class="tag-cloud">
+                <span class="bento-tag">软件设计基础</span>
+                <span class="bento-tag">微机原理与嵌入式系统设计</span>
+                <span class="bento-tag">自动测试与总线技术</span>
+                <span class="bento-tag">微机原理与接口技术</span>
+              </div>
+            </div>
+            <div class="bento-cat">
+              <div class="bento-cat-header">
+                <svg class="bento-cat-header__icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                <span class="bento-cat-header__title">理论框架</span>
+              </div>
+              <div class="tag-cloud">
+                <span class="bento-tag">信号与系统</span>
+                <span class="bento-tag">自动控制理论</span>
+                <span class="bento-tag">数字信号处理</span>
+                <span class="bento-tag">随机信号分析</span>
+                <span class="bento-tag">模式识别</span>
+                <span class="bento-tag">机器学习</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Hobbies (12, short) -->
+        <div class="bento-card col-span-12 bento-card--surface bento-card--short">
+          <div class="bento-card__title">爱好</div>
+          <div class="bento-grid"
+            style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005bc1" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <h4 style="font-weight: 800; font-size: 0.95rem;">摄影</h4>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">风光、静物。记录光影流转。</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005bc1" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                  </path>
+                </svg>
+                <h4 style="font-weight: 800; font-size: 0.95rem;">创造</h4>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">搓点小玩意，享受创造的乐趣。</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="#005bc1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-sparkles">
+                  <path
+                    d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.937A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063A2 2 0 0 0 14.063 15.5L12.481 21.635a.5.5 0 0 1-.962 0L9.937 15.5ZM19 3v4M21 5h-4M5 19v4M7 21H3" />
+                </svg>
+                <h4 style="font-weight: 800; font-size: 0.95rem;">探索</h4>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">保持对世界的好奇心。</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="#005bc1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-coffee">
+                  <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                  <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                  <line x1="6" y1="2" x2="6" y2="4" />
+                  <line x1="10" y1="2" x2="10" y2="4" />
+                  <line x1="14" y1="2" x2="14" y2="4" />
+                </svg>
+                <h4 style="font-weight: 800; font-size: 0.95rem;">游戏</h4>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">Minecraft, Cities: Skylines 2, Stellaris...
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- End bento-grid -->
+    </div> <!-- End container -->
+  </section>
+
+  <!-- ========== Articles ========== -->
+  <section id="articles" class="section">
+    <div class="container">
+      <h2 class="about__heading fade-up">文章</h2>
+      <div class="about__divider fade-up"></div>
+      <div class="card-grid" id="articles-track">
+        <!-- Cards auto-loaded by cards.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Projects ========== -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="about__heading fade-up">作品</h2>
+      <div class="about__divider fade-up"></div>
+      <div class="card-grid" id="projects-track">
+        <!-- Cards auto-loaded by cards.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Photos ========== -->
+  <section id="photos" class="section">
+    <div class="container">
+      <h2 class="about__heading fade-up">相册</h2>
+      <div class="about__divider fade-up"></div>
+      <div class="card-grid" id="photos-track">
+        <!-- Cards auto-loaded by cards.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <p>Designed & Built by <a href="https://github.com/shuxuaaaaaan">Shuxuan</a></p>
+    <div class="site-footer__links">
+      <a href="./feed.xml" class="site-footer__link" title=" RSS Feed ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 11a9 9 0 0 1 9 9" />
+          <path d="M4 4a16 16 0 0 1 16 16" />
+          <circle cx="5" cy="19" r="1" />
+        </svg>RSS
+      </a>
+      <a href="https://github.com/shuxuaaaaaan" class="site-footer__link" title=" GitHub ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+          </path>
+        </svg>shuxuaaaaaan
+      </a>
+      <a href="https://icp.gov.moe/?keyword=20261023" target="_blank" class="site-footer__link" title=" 萌ICP备 ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>萌ICP备20261023号
+      </a>
+    </div>
+    <div class="site-footer__status">
+      Unix time: <span id="unix-timestamp">0000000000</span> |
+      Uptime: <span id="site-uptime">0d 0h 0m 0s</span>
+    </div>
+  </footer>
+
+  <!-- Hero background animation -->
+  <script src="./js/hero-bg.js"></script>
+  <!-- Auto-discover & render cards from GitHub -->
+  <script src="./js/cards.js"></script>
+  <!-- Site status & uptime logic -->
+  <script src="./js/uptime.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+---
+title: Hello World
+description: 这是本站上线后的一篇测试文章，用于验证 Markdown 渲染引擎。
+tag: 测试
+date: 2026-02-11
+rss: no
+cover: Sierra.jpg
+---
+
+
+这是一篇测试文章，用于验证 Markdown 渲染引擎。
+
+## 二级标题
+
+正文段落示例。**加粗文本**、*斜体文本*、`行内代码`。
+
+### 代码块
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+console.log(greet('World'));
+```
+
+### 列表
+
+- 项目一
+- 项目二
+  - 子项目
+- 项目三
+
+### 引用
+
+> 简洁是终极的复杂。
+> — 达芬奇
+
+### 表格
+
+| 特性 | 状态 |
+| --- | --- |
+| 暗黑模式 | ✅ |
+| Markdown 渲染 | ✅ |
+| 自适应卡片 | ✅ |
+
+---
+
+### 图片测试
+
+![Sierra](./Sierra.jpg)
+
+感谢阅读！
