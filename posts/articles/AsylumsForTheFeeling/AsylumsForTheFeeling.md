@@ -1,12 +1,12 @@
 ---
+publish: yes
 title: Asylums for the Feeling - Silent Poets feat. Leila Adu
 description: 歌曲分享
 tag: 随想
 date: 2026-03-24
 rss: no
-cover: Cover20260327165053.png
+cover: Cover20260327165053.webp
 ---
-
 黑沙滩，白浪，玄武岩，苔原
 
 <div class="video-container">

@@ -125,6 +125,12 @@
             // Parse frontmatter & strip it from body
             const { meta, body } = parseFrontmatter(mdText);
 
+            // Access control
+            if (meta.publish !== 'yes') {
+                showError('找不到该文章，或是该文章尚未发布。');
+                return;
+            }
+
             // Update page title (frontmatter title > H1 > default)
             const heading = meta.title || extractTitle(body);
             if (heading) {

@@ -6,7 +6,7 @@
     "date": "2026-03-27",
     "path": "posts/articles/AE_Semiconductor/AE_Semiconductor.md",
     "dir": "articles",
-    "cover": "posts/articles/AE_Semiconductor/DSC02213.jpg"
+    "cover": "posts/articles/AE_Semiconductor/DSC02213.webp"
   },
   {
     "title": "秦岭之下",
@@ -15,7 +15,7 @@
     "date": "2026-03-26",
     "path": "posts/photos/25XDU/album.md",
     "dir": "photos",
-    "cover": "posts/photos/25XDU/DSC02088.jpg"
+    "cover": "posts/photos/25XDU/DSC02088.webp"
   },
   {
     "title": "长安花开时",
@@ -24,7 +24,7 @@
     "date": "2026-03-26",
     "path": "posts/photos/25Xian/album.md",
     "dir": "photos",
-    "cover": "posts/photos/25Xian/DSC09061.jpg"
+    "cover": "posts/photos/25Xian/DSC09061.webp"
   },
   {
     "title": "钢铁森林",
@@ -33,7 +33,7 @@
     "date": "2026-03-25",
     "path": "posts/photos/25SummerShanghai/album.md",
     "dir": "photos",
-    "cover": "posts/photos/25SummerShanghai/DSC09610.jpg"
+    "cover": "posts/photos/25SummerShanghai/DSC09610.webp"
   },
   {
     "title": "Asylums for the Feeling - Silent Poets feat. Leila Adu",
@@ -42,7 +42,7 @@
     "date": "2026-03-24",
     "path": "posts/articles/AsylumsForTheFeeling/AsylumsForTheFeeling.md",
     "dir": "articles",
-    "cover": "posts/articles/AsylumsForTheFeeling/Cover20260327165053.png"
+    "cover": "posts/articles/AsylumsForTheFeeling/Cover20260327165053.webp"
   },
   {
     "title": "雾锁苍山凌绝顶",
@@ -51,7 +51,7 @@
     "date": "2026-03-24",
     "path": "posts/photos/25AutumnMountHuashan/album.md",
     "dir": "photos",
-    "cover": "posts/photos/25AutumnMountHuashan/DSC05676.jpg"
+    "cover": "posts/photos/25AutumnMountHuashan/DSC05676.webp"
   },
   {
     "title": "山巅瞰城",
@@ -60,7 +60,7 @@
     "date": "2026-03-24",
     "path": "posts/photos/25SummerLanzhou/album.md",
     "dir": "photos",
-    "cover": "posts/photos/25SummerLanzhou/DSC05625.jpg"
+    "cover": "posts/photos/25SummerLanzhou/DSC05625.webp"
   },
   {
     "title": "灿烂瞬息",
@@ -69,7 +69,7 @@
     "date": "2026-03-23",
     "path": "posts/photos/24WinterLanzhou/album.md",
     "dir": "photos",
-    "cover": "posts/photos/24WinterLanzhou/DSC04038.jpg"
+    "cover": "posts/photos/24WinterLanzhou/DSC04038.webp"
   },
   {
     "title": "再回附中",
@@ -78,7 +78,7 @@
     "date": "2026-03-23",
     "path": "posts/photos/24WinterNWNUSCH/album.md",
     "dir": "photos",
-    "cover": "posts/photos/24WinterNWNUSCH/DSC09758.jpg"
+    "cover": "posts/photos/24WinterNWNUSCH/DSC09758.webp"
   },
   {
     "title": "残夏入梦 碎金沉影",
@@ -87,7 +87,7 @@
     "date": "2026-03-23",
     "path": "posts/photos/24XDU/album.md",
     "dir": "photos",
-    "cover": "posts/photos/24XDU/DSC09203.jpg"
+    "cover": "posts/photos/24XDU/DSC09203.webp"
   },
   {
     "title": "陇上夏末",
@@ -96,7 +96,7 @@
     "date": "2026-03-21",
     "path": "posts/photos/24SummerLanzhou/album.md",
     "dir": "photos",
-    "cover": "posts/photos/24SummerLanzhou/DSC06107.jpg"
+    "cover": "posts/photos/24SummerLanzhou/DSC06107.webp"
   },
   {
     "title": "电路模型探究装置",
@@ -105,16 +105,7 @@
     "date": "2026-03-12",
     "path": "posts/works/NUEDC2025G/NUEDC2025G.md",
     "dir": "works",
-    "cover": "posts/works/NUEDC2025G/Cover20260328124032.png"
-  },
-  {
-    "title": "这网站是个好东西，得建！",
-    "description": "这下终于有自己的网站了",
-    "tag": "随想",
-    "date": "2026-02-23",
-    "path": "posts/articles/Start/Start.md",
-    "dir": "articles",
-    "cover": "posts/articles/Start/Cover20260327170550.png"
+    "cover": "posts/works/NUEDC2025G/Cover20260328124032.webp"
   },
   {
     "title": "Wild Child - Enya",
@@ -123,7 +114,16 @@
     "date": "2026-02-20",
     "path": "posts/articles/WildChild/WildChild.md",
     "dir": "articles",
-    "cover": "posts/articles/WildChild/Cover20260327170422.png"
+    "cover": "posts/articles/WildChild/Cover20260327170422.webp"
+  },
+  {
+    "title": "这网站是个好东西，得建！",
+    "description": "这下终于有自己的网站了",
+    "tag": "随想",
+    "date": "2026-02-18",
+    "path": "posts/articles/Start/Start.md",
+    "dir": "articles",
+    "cover": "posts/articles/Start/Cover20260327170550.webp"
   },
   {
     "title": "Hello World",
@@ -132,7 +132,7 @@
     "date": "2026-02-11",
     "path": "posts/articles/HelloWorld/HelloWorld.md",
     "dir": "articles",
-    "cover": "posts/articles/HelloWorld/Sierra.jpg"
+    "cover": "posts/articles/HelloWorld/Sierra.webp"
   },
   {
     "title": "实验室在线工作站",
@@ -141,7 +141,7 @@
     "date": "2026-02-11",
     "path": "posts/works/LabOnlinePortal/LabOnlinePortal.md",
     "dir": "works",
-    "cover": "posts/works/LabOnlinePortal/Cover20260328123903.png"
+    "cover": "posts/works/LabOnlinePortal/Cover20260328123903.webp"
   },
   {
     "title": "个人主页系统",
@@ -150,6 +150,6 @@
     "date": "2026-02-11",
     "path": "posts/works/PersonalWebsite/PersonalWebsite.md",
     "dir": "works",
-    "cover": "posts/works/PersonalWebsite/Cover20260327170550.png"
+    "cover": "posts/works/PersonalWebsite/Cover20260327170550.webp"
   }
 ]

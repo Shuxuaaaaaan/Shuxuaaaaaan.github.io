@@ -1,10 +1,11 @@
 ---
+publish: yes
 title: 模拟电子技术 半导体器件
 description: 半导体基础 二极管 三极管
 tag: 学习笔记
 date: 2026-03-27
 rss: no
-cover: DSC02213.jpg
+cover: DSC02213.webp
 ---
 ## 半导体基础
 
@@ -286,3 +287,4 @@ $$\beta = \frac{\Delta I_C}{\Delta I_B} = \frac{\Delta I_C}{\Delta I_E - \Delta 
 #### 反向击穿电压
 
 #### 温度影响
+

@@ -2,6 +2,10 @@
 local_preview.py
 compress_images.py
 cleanup_albums.py
+migrate_images.py
+
+# Raw images (originals, not for deployment)
+imagesraw/
 update_photos.py
 generate_rss.py
 build.py

@@ -1,14 +1,12 @@
 ---
+publish: yes
 title: 个人主页系统
 description: 基于原生 HTML/CSS/JS 的极简静态主页。部署在GitHub Pages。
 tag: 项目
 date: 2026-02-11
 rss: no
-cover: Cover20260327170550.png
-
+cover: Cover20260327170550.webp
 ---
-
-
 一个基于原生 HTML/CSS/JS 的极简静态主页。
 
 ## 技术栈

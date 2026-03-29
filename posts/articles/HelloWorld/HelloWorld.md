@@ -1,13 +1,12 @@
 ---
+publish: yes
 title: Hello World
 description: 这是本站上线后的一篇测试文章，用于验证 Markdown 渲染引擎。
 tag: 测试
 date: 2026-02-11
 rss: no
-cover: Sierra.jpg
+cover: Sierra.webp
 ---
-
-
 这是一篇测试文章，用于验证 Markdown 渲染引擎。
 
 ## 二级标题
@@ -47,6 +46,6 @@ console.log(greet('World'));
 
 ### 图片测试
 
-![Sierra](./Sierra.jpg)
+![Sierra](./Sierra.webp)
 
 感谢阅读！
