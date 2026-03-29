@@ -94,6 +94,14 @@
         const params = new URLSearchParams(window.location.search);
         const mdPath = params.get('path');
 
+        const fromSection = params.get('fromSection');
+        if (fromSection) {
+            const backLinks = document.querySelectorAll('a[href="./index.html"]');
+            backLinks.forEach(link => {
+                link.href = './index.html#' + fromSection;
+            });
+        }
+
         if (!mdPath) {
             showError('未指定文章路径。');
             return;

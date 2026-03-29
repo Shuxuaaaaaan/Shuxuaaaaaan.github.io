@@ -42,9 +42,13 @@
     }
 
     // ── Card HTML builder ─────────────────────────────────────
-    function buildCard(item) {
+    function buildCard(item, sectionId) {
         var a = document.createElement('a');
-        a.href = './post.html?path=' + encodeURIComponent(item.path);
+        var href = './post.html?path=' + encodeURIComponent(item.path);
+        if (sectionId) {
+            href += '&fromSection=' + sectionId;
+        }
+        a.href = href;
         a.className = 'card';
         if (item.dir === 'photos') a.classList.add('card--photo');
 
@@ -109,8 +113,11 @@
         var nextItems = state.items.slice(state.currentIndex, state.currentIndex + state.chunkSize);
         if (nextItems.length === 0) return;
 
+        var sectionInfo = SECTIONS.find(function(s) { return s.dir === dir; });
+        var sectionId = sectionInfo ? sectionInfo.sectionId : '';
+
         nextItems.forEach(function (item) {
-            track.appendChild(buildCard(item));
+            track.appendChild(buildCard(item, sectionId));
         });
 
         observeCards(track);
