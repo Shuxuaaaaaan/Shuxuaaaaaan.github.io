@@ -359,20 +359,14 @@ button {
    Scrollbar (non-mobile)
    =========================== */
 
-@media (min-width: 769px) {
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
+/* Hide native scrollbar on the main page completely (Lenis still handles smooth scroll) */
+html, body {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
 
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: var(--scrollbar-thumb);
-        border-radius: 3px;
-    }
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
 }
 
 /* ===========================

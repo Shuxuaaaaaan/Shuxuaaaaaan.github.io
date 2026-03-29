@@ -42,13 +42,24 @@
     }
 
     // ── Card HTML builder ─────────────────────────────────────
-    function buildCard(item, sectionId) {
+    function buildCard(item, sectionId, isPriority) {
         var a = document.createElement('a');
-        var href = './post.html?path=' + encodeURIComponent(item.path);
+        var href = './?path=' + encodeURIComponent(item.path);
         if (sectionId) {
             href += '&fromSection=' + sectionId;
         }
         a.href = href;
+        
+        a.onclick = function(e) {
+            e.preventDefault();
+            if (window.openArticleModal) {
+                window.openArticleModal(item.path);
+                window.history.pushState({path: item.path}, '', href);
+            } else {
+                window.location.href = href; // fallback
+            }
+        };
+
         a.className = 'card';
         if (item.dir === 'photos') a.classList.add('card--photo');
 
@@ -58,7 +69,7 @@
             coverDiv.className = 'card__cover';
             var img = document.createElement('img');
             img.src = item.cover;
-            img.loading = 'lazy';
+            img.loading = isPriority ? 'eager' : 'lazy';
             coverDiv.appendChild(img);
             a.appendChild(coverDiv);
         }
@@ -116,11 +127,30 @@
         var sectionInfo = SECTIONS.find(function(s) { return s.dir === dir; });
         var sectionId = sectionInfo ? sectionInfo.sectionId : '';
 
+        var isFirstChunk = (state.currentIndex === 0);
+        var newCards = [];
         nextItems.forEach(function (item) {
-            track.appendChild(buildCard(item, sectionId));
+            var card = buildCard(item, sectionId, isFirstChunk);
+            if (isFirstChunk) {
+                card.classList.add('card--instant', 'visible');
+            }
+            track.appendChild(card);
+            newCards.push(card);
         });
 
-        observeCards(track);
+        if (!isFirstChunk) {
+            // For "Load More", fade in all 4 cards together
+            requestAnimationFrame(function() {
+                requestAnimationFrame(function() {
+                    newCards.forEach(function(card) {
+                        card.classList.add('visible');
+                    });
+                });
+            });
+        } else {
+            // For the first chunk, they are already visible via card--instant
+        }
+        
         state.currentIndex += state.chunkSize;
         updateLoadMoreButton(dir);
     }
@@ -183,7 +213,19 @@
         }
     }
 
-    // ── Data Fetching ─────────────────────────────────────────
+    // ── Data Fetching & Preloading ───────────────────────────
+    function preloadPriorityImages(allPosts) {
+        SECTIONS.forEach(function (sec) {
+            var items = allPosts.filter(p => p.dir === sec.dir).slice(0, 4);
+            items.forEach(function (item) {
+                if (item.cover) {
+                    var img = new Image();
+                    img.src = item.cover;
+                }
+            });
+        });
+    }
+
     var postsPromise = null;
     async function getPosts() {
         if (!postsPromise) {
@@ -196,6 +238,7 @@
                     var res = await fetch('./content.json?t=' + Date.now());
                     if (!res.ok) throw new Error('Failed to load content.json');
                     var data = await res.json();
+                    preloadPriorityImages(data);
                     cacheSet(cacheKey, data);
                     return data;
                 } catch (e) {

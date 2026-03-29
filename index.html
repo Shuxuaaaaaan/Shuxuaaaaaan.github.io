@@ -7,15 +7,29 @@
   <title>Shuxuan — 个人主页</title>
   <meta name="description" content="Shuxuan的个人主页 — 文章、作品与简介。" />
   <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet" />
 
   <link rel="stylesheet" href="./css/global.css?v4" />
   <link rel="stylesheet" href="./css/index.css?v4" />
+  <link rel="stylesheet" href="./css/markdown.css?v4" />
   <!-- RSS auto-discovery -->
   <link rel="alternate" type="application/rss+xml" title="Shuxuan RSS" href="./feed.xml" />
   <!-- Inline critical theme script to avoid FOUC -->
   <script src="./js/theme.js"></script>
+
+  <!-- Deferred Scripts -->
+  <script defer src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script defer src="./js/smooth-scroll.js"></script>
+  <script defer src="./js/navbar.js"></script>
+  <script defer src="./js/cards.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/marked-footnote/dist/index.umd.min.js"></script>
+  <script defer src="./js/renderer.js"></script>
+  <script defer src="./js/uptime.js"></script>
+  <script defer src="./js/hero-bg.js"></script>
 </head>
 
 <body>
@@ -105,7 +119,7 @@
         <!-- Row 1: About Me (8) + Education (4) -->
         <div class="bento-card col-span-8 bento-card--hero bento-card--primary">
           <div class="avatar-placeholder" style="flex-shrink: 0;">
-            <img src="./assets/img/avatar.png" alt="Avatar">
+            <img src="./assets/img/avatar.webp" alt="Avatar">
           </div>
           <div class="hero-content">
             <div class="bento-card__label"> </div>
@@ -120,13 +134,13 @@
           <div class="bento-card__title">教育经历</div>
           <div class="education-list">
             <a href="https://www.xidian.edu.cn/" target="_blank" rel="noopener noreferrer" class="education-card">
-              <img src="./assets/img/XDUlogo.png" alt="Xidian University Logo" class="education-card__bg">
+              <img src="./assets/img/XDUlogo.webp" alt="Xidian University Logo" class="education-card__bg">
               <p class="education-card__year">2024 至今</p>
               <h4 class="education-card__school">西安电子科技大学</h4>
               <p class="education-card__desc">测控技术与仪器 本科</p>
             </a>
             <a href="https://www.nwnusch.cn/" target="_blank" rel="noopener noreferrer" class="education-card">
-              <img src="./assets/img/NWNUSCHlogo.png" alt="NWNU Logo" class="education-card__bg">
+              <img src="./assets/img/NWNUSCHlogo.webp" alt="NWNU Logo" class="education-card__bg">
               <p class="education-card__year">2021 - 2024</p>
               <h4 class="education-card__school">西北师范大学附属中学</h4>
               <p class="education-card__desc">高中</p>
@@ -392,17 +406,56 @@
     </div>
   </footer>
 
-  <!-- Hero background animation -->
-  <script src="./js/hero-bg.js"></script>
-  <!-- Auto-discover & render cards from GitHub -->
-  <script src="./js/cards.js"></script>
-  <!-- Site status & uptime logic -->
-  <script src="./js/uptime.js"></script>
-  <!-- Smooth scroll logic (Lenis) -->
-  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
-  <script src="./js/smooth-scroll.js"></script>
-  <!-- Dynamic Navbar Logic -->
-  <script src="./js/navbar.js"></script>
+  <!-- ========== Article Modal ========== -->
+  <div id="article-modal" class="article-modal" aria-hidden="true">
+    <div class="article-modal__backdrop"></div>
+    <div class="article-modal__content-wrapper" id="article-modal-wrapper">
+      <main class="post-page">
+        <header class="modal-header">
+          <button class="modal-close-btn" id="close-modal-btn" aria-label="返回首页">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+          </button>
+          <div class="modal-header__title" id="modal-header-title"></div>
+          <div style="width: 40px;"></div> <!-- Spacer for flex centering -->
+        </header>
+
+        <div class="modal-body" id="modal-body" data-lenis-prevent="true">
+          <div class="modal-body-content">
+            <div class="post-meta" id="post-meta"></div>
+
+            <article id="post-content" class="markdown-body">
+              <!-- Content rendered by renderer.js -->
+            </article>
+
+            <nav class="post-navigation hidden" id="post-navigation">
+              <a href="#" id="nav-prev" class="nav-link hidden">
+                <span class="nav-label">上一篇</span>
+                <span class="nav-title" id="nav-prev-title"></span>
+              </a>
+              <a href="#" class="nav-link nav-home" id="close-nav-btn">
+                <span class="nav-label">返回</span>
+                <span class="nav-title">首页</span>
+              </a>
+              <a href="#" id="nav-next" class="nav-link hidden">
+                <span class="nav-label">下一篇</span>
+                <span class="nav-title" id="nav-next-title"></span>
+              </a>
+            </nav>
+          </div>
+        </div>
+
+        <!-- ========== Back to Top Button ========== -->
+        <button id="modal-back-to-top" class="back-to-top" aria-label="回到顶部">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+        </button>
+      </main>
+    </div>
+  </div>
 
 </body>
 

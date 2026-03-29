@@ -13,6 +13,59 @@
 
     const contentEl = document.getElementById('post-content');
     const titleEl = document.querySelector('title');
+    let modalLenis = null;
+
+    function initModalLenis() {
+        const modalBody = document.getElementById('modal-body');
+        if (!modalBody || typeof Lenis === 'undefined') return;
+
+        if (modalLenis) modalLenis.destroy();
+
+        modalLenis = new Lenis({
+            wrapper: modalBody,
+            content: modalBody.querySelector('.modal-body-content'),
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smoothIndicator: true,
+            smoothWheel: true,
+        });
+
+        function raf(time) {
+            if (modalLenis) {
+                modalLenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+        }
+        requestAnimationFrame(raf);
+    }
+
+    function destroyModalLenis() {
+        if (modalLenis) {
+            modalLenis.destroy();
+            modalLenis = null;
+        }
+    }
+
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            if (document.querySelector(`script[src="${src}"]`)) return resolve();
+            let s = document.createElement('script');
+            s.src = src;
+            s.onload = resolve;
+            s.onerror = reject;
+            document.head.appendChild(s);
+        });
+    }
+
+    function loadStylesheet(href) {
+        if (document.querySelector(`link[href="${href}"]`)) return;
+        let l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href = href;
+        document.head.appendChild(l);
+    }
 
     /**
      * Show friendly 404 state.
@@ -88,26 +141,35 @@
     }
 
     /**
-     * Main entry — fetch and render.
+     * Fetch, render, and open article modal.
      */
-    async function init() {
-        const params = new URLSearchParams(window.location.search);
-        const mdPath = params.get('path');
-
-        const fromSection = params.get('fromSection');
-        if (fromSection) {
-            const backLinks = document.querySelectorAll('a[href="./index.html"]');
-            backLinks.forEach(link => {
-                link.href = './index.html#' + fromSection;
-            });
-        }
-
+    window.openArticleModal = async function(mdPath) {
         if (!mdPath) {
             showError('未指定文章路径。');
             return;
         }
 
-        showLoading();
+        const modal = document.getElementById('article-modal');
+        const siteHeader = document.querySelector('.site-header');
+        const modalBodyContent = document.querySelector('.modal-body-content');
+
+        if (siteHeader) siteHeader.classList.add('hidden');
+
+        let isNavigating = modal && modal.classList.contains('active');
+        if (isNavigating) {
+            if (modalBodyContent) {
+                modalBodyContent.classList.add('fade-out');
+                await new Promise(r => setTimeout(r, 200));
+            }
+        } else if (modal) {
+            modal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        if (window.lenis) window.lenis.stop();
+        initModalLenis();
+        
+        if (!isNavigating) showLoading();
 
         try {
             // Simplified fetch: everything is now relative to the site root
@@ -130,6 +192,13 @@
 
             const mdText = await response.text();
 
+            // Dynamically load KaTeX if needed
+            if (mdText.includes('$')) {
+                loadStylesheet('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css');
+                await loadScript('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js');
+                await loadScript('https://cdn.jsdelivr.net/npm/marked-katex-extension/lib/index.umd.js');
+            }
+
             // Parse frontmatter & strip it from body
             const { meta, body } = parseFrontmatter(mdText);
 
@@ -143,6 +212,11 @@
             const heading = meta.title || extractTitle(body);
             if (heading) {
                 titleEl.textContent = heading + ' — Shuxuan';
+                const headerTitle = document.getElementById('modal-header-title');
+                if (headerTitle) {
+                    headerTitle.textContent = heading;
+                    headerTitle.classList.remove('visible');
+                }
             }
 
             // Update metadata
@@ -180,7 +254,7 @@
                 var src = resolveUrl(token.href, rawDir);
                 var alt = token.text || '';
                 var titleAttr = token.title ? ' title="' + token.title + '"' : '';
-                return '<img src="' + src + '" alt="' + alt + '"' + titleAttr + ' />';
+                return '<img data-src="' + src + '" alt="' + alt + '"' + titleAttr + ' class="lazy-image" />';
             };
 
             renderer.link = function (token) {
@@ -220,7 +294,7 @@
                 var photoPairs = [];
                 var imgs = tempDiv.querySelectorAll('img');
                 imgs.forEach(function (img) {
-                    var pair = { src: img.src, alt: img.alt, desc: '' };
+                    var pair = { src: img.getAttribute('data-src') || img.src, alt: img.alt, desc: '' };
                     var next = img.nextElementSibling;
                     // If image is inside a p, check the p's next sibling or the p's remaining text
                     var parentP = img.parentElement.tagName === 'P' ? img.parentElement : null;
@@ -257,6 +331,16 @@
                 }
             } else {
                 contentEl.innerHTML = htmlContent;
+                // Native lazy loading for regular articles
+                var articleImgs = contentEl.querySelectorAll('img.lazy-image');
+                articleImgs.forEach(img => {
+                    var src = img.getAttribute('data-src');
+                    if (src) {
+                        img.src = src;
+                        img.removeAttribute('data-src');
+                        img.loading = 'lazy';
+                    }
+                });
             }
 
             // Fetch list and update navigation
@@ -272,40 +356,51 @@
                     navContainer.classList.remove('hidden');
                 }
 
+                const prevLink = document.getElementById('nav-prev');
                 if (currentIndex > 0) {
                     // Previous article (newer)
                     const prevItem = items[currentIndex - 1];
-                    const prevLink = document.getElementById('nav-prev');
-                    prevLink.href = './post.html?path=' + encodeURIComponent(prevItem.path);
+                    const href = './?path=' + encodeURIComponent(prevItem.path);
+                    prevLink.href = href;
+                    prevLink.onclick = function(e) {
+                        e.preventDefault();
+                        window.history.pushState({path: prevItem.path}, '', href);
+                        window.openArticleModal(prevItem.path);
+                    };
                     document.getElementById('nav-prev-title').textContent = prevItem.title;
                     prevLink.classList.remove('hidden');
+                } else if (prevLink) {
+                    prevLink.classList.add('hidden');
                 }
 
+                const nextLink = document.getElementById('nav-next');
                 if (currentIndex < items.length - 1) {
                     // Next article (older)
                     const nextItem = items[currentIndex + 1];
-                    const nextLink = document.getElementById('nav-next');
-                    nextLink.href = './post.html?path=' + encodeURIComponent(nextItem.path);
+                    const href = './?path=' + encodeURIComponent(nextItem.path);
+                    nextLink.href = href;
+                    nextLink.onclick = function(e) {
+                        e.preventDefault();
+                        window.history.pushState({path: nextItem.path}, '', href);
+                        window.openArticleModal(nextItem.path);
+                    };
                     document.getElementById('nav-next-title').textContent = nextItem.title;
                     nextLink.classList.remove('hidden');
+                } else if (nextLink) {
+                    nextLink.classList.add('hidden');
                 }
             });
 
-            // Back to Top Logic
-            const backToTopBtn = document.getElementById('back-to-top');
-            if (backToTopBtn) {
-                window.addEventListener('scroll', function () {
-                    if (window.scrollY > 400) {
-                        backToTopBtn.classList.add('visible');
-                    } else {
-                        backToTopBtn.classList.remove('visible');
-                    }
-                });
+            // Reset modal scroll to top when new article loads
+            const modalBody = document.getElementById('modal-body');
+            if (modalBody) {
+                modalBody.scrollTop = 0;
+            }
 
-                backToTopBtn.addEventListener('click', function () {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
+            if (isNavigating && modalBodyContent) {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        modalBodyContent.classList.remove('fade-out');
                     });
                 });
             }
@@ -314,7 +409,26 @@
             console.error('Failed to load markdown:', err);
             showError('加载失败，请检查网络连接。');
         }
-    }
+    };
+
+    window.closeArticleModal = function() {
+        const modal = document.getElementById('article-modal');
+        const siteHeader = document.querySelector('.site-header');
+        
+        if (siteHeader) siteHeader.classList.remove('hidden');
+
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            destroyModalLenis();
+            if (window.lenis) window.lenis.start();
+            setTimeout(function() {
+                titleEl.textContent = 'Shuxuan — 个人主页';
+                const headerTitle = document.getElementById('modal-header-title');
+                if (headerTitle) headerTitle.textContent = '';
+            }, 300);
+        }
+    };
 
     // ── Photo Wall & Lightbox Logic ─────────────────────────────
     function renderPhotoWall(pairs) {
@@ -343,7 +457,7 @@
             item.dataset.idx = idx; // Tag with original index for sorted loading
             
             var img = document.createElement('img');
-            img.src = pair.src;
+            img.dataset.src = pair.src;
             img.alt = pair.alt || '';
             img.loading = 'lazy';
             
@@ -378,6 +492,11 @@
                 
                 intersecting.forEach(function(entry, i) {
                     setTimeout(function() {
+                        var img = entry.target.querySelector('img');
+                        if (img && img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
                         entry.target.classList.add('visible');
                     }, i * 100);
                     obs.unobserve(entry.target);
@@ -510,11 +629,87 @@
         return items;
     }
 
+    function setupModalLogic() {
+        const params = new URLSearchParams(window.location.search);
+        const mdPath = params.get('path');
+        if (mdPath) {
+            window.openArticleModal(mdPath);
+        }
+        
+        window.addEventListener('popstate', function(e) {
+            const currentParams = new URLSearchParams(window.location.search);
+            const currentPath = currentParams.get('path');
+            if (currentPath) {
+                window.openArticleModal(currentPath);
+            } else {
+                window.closeArticleModal();
+            }
+        });
+
+        // Bind close buttons
+        const closeBtn = document.getElementById('close-modal-btn');
+        const closeNavBtn = document.getElementById('close-nav-btn');
+
+        function goBackHome(e) {
+            e.preventDefault();
+            window.history.pushState({}, '', './');
+            window.closeArticleModal();
+        }
+
+        if (closeBtn) closeBtn.addEventListener('click', goBackHome);
+        if (closeNavBtn) closeNavBtn.addEventListener('click', goBackHome);
+        
+        // Setup Modal Back to Top and Sticky Header
+        const modalBackToTopBtn = document.getElementById('modal-back-to-top');
+        const modalBody = document.getElementById('modal-body');
+        const modalHeader = document.querySelector('.modal-header');
+        const modalHeaderTitle = document.getElementById('modal-header-title');
+        
+        if (modalBody) {
+            modalBody.addEventListener('scroll', function () {
+                const st = modalBody.scrollTop;
+                
+                if (modalBackToTopBtn) {
+                    if (st > 400) {
+                        modalBackToTopBtn.classList.add('visible');
+                    } else {
+                        modalBackToTopBtn.classList.remove('visible');
+                    }
+                }
+
+                if (modalHeader) {
+                    if (st > 10) {
+                        modalHeader.classList.add('scrolled');
+                    } else {
+                        modalHeader.classList.remove('scrolled');
+                    }
+                }
+
+                if (modalHeaderTitle) {
+                    if (st > 120) {
+                        modalHeaderTitle.classList.add('visible');
+                    } else {
+                        modalHeaderTitle.classList.remove('visible');
+                    }
+                }
+            });
+
+            if (modalBackToTopBtn) {
+                modalBackToTopBtn.addEventListener('click', function () {
+                    modalBody.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        }
+    }
+
     // Run when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', setupModalLogic);
     } else {
-        init();
+        setupModalLogic();
     }
 })();
 
