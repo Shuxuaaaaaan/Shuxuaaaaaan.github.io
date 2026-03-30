@@ -42,7 +42,7 @@
     margin-bottom: 16px;
     opacity: 0;
     transform: translateY(32px);
-    animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    animation: heroFadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
 }
 
 .hero__subtitle {
@@ -52,13 +52,58 @@
     max-width: 520px;
     opacity: 0;
     transform: translateY(20px);
-    animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    animation: heroFadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
 }
 
 @keyframes heroFadeIn {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* Scroll Down Indicator */
+.hero__scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    translate: -50% 0; /* Modern property: separates centering from transform animations */
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: 
+        opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: 
+        indicatorEntrance 1.2s cubic-bezier(0.22, 1, 0.36, 1) 2.2s both,
+        scrollBounce 2.5s ease-in-out infinite 3.4s;
+    cursor: pointer;
+    z-index: 10;
+    will-change: transform, opacity;
+}
+
+.hero__scroll-indicator svg {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 0 12px rgba(0,0,0,0.08));
+}
+
+@keyframes indicatorEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 0.3; /* Subtle base opacity */
+        transform: translateY(0);
+    }
+}
+
+@keyframes scrollBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(12px);
     }
 }
 
@@ -81,6 +126,16 @@
     padding: 60px 0;
 }
 
+#articles {
+    padding-top: 100px;
+}
+
+@media (min-width: 1024px) {
+    #articles {
+        padding-top: 140px;
+    }
+}
+
 /* Ensure sections cover the fixed hero */
 .section, 
 .about,
@@ -90,9 +145,15 @@
 }
 
 /* Spacer for the first section after hero */
-#articles {
+.site-header-wrapper {
     margin-top: 100vh;
+    height: 64px;
+    width: 100%;
+    position: relative;
+    z-index: 1000;
 }
+
+
 
 .about__heading {
     font-size: clamp(2rem, 5vw, 2.8rem);
@@ -123,7 +184,7 @@
 /* Card Base Styles */
 .bento-card {
     border-radius: 20px;
-    padding: 18px;
+    padding: 24px 32px;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -181,8 +242,8 @@
 
 /* Height modifiers */
 .bento-card--short {
-    min-height: 140px;
-    padding: 24px 36px;
+    min-height: 100px;
+    padding: 20px 32px;
 }
 
 /* Inner Content Styles */
@@ -354,8 +415,9 @@
 .skills-container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 12px;
     width: 100%;
+    padding-left: 12px;
 }
 
 .skill-category {
@@ -393,7 +455,7 @@
 }
 
 .bento-cat {
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 
 .bento-cat:last-child {

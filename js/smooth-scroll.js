@@ -43,6 +43,20 @@
         });
     });
 
+    // Scroll indicator interaction
+    const scrollIndicator = document.querySelector('.hero__scroll-indicator');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', () => {
+            const articles = document.querySelector('#articles');
+            if (articles) {
+                lenis.scrollTo(articles, {
+                    offset: -100,
+                    duration: 1.5,
+                });
+            }
+        });
+    }
+
     // Expose lenis globally if needed for other scripts
     window.lenis = lenis;
 })();

@@ -135,24 +135,29 @@ button {
 
 .site-header {
     position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 120vh;
+    left: 0;
     width: 100%;
+    opacity: 0;
     z-index: 1000;
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-    border-bottom: 1px solid var(--glass-border);
+    transform: none;
+    will-change: top, transform, opacity, background-color, backdrop-filter;
+    background: var(--bg-about);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid transparent;
     transition: 
-        transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), 
-        width 0.8s cubic-bezier(0.65, 0, 0.35, 1), 
-        top 0.8s cubic-bezier(0.65, 0, 0.35, 1), 
-        background-color 0.8s cubic-bezier(0.65, 0, 0.35, 1), 
-        border-radius 0.8s cubic-bezier(0.65, 0, 0.35, 1), 
-        box-shadow 0.8s cubic-bezier(0.65, 0, 0.35, 1), 
-        backdrop-filter 0.8s cubic-bezier(0.65, 0, 0.35, 1);
-    will-change: transform, width, top, border-radius;
+        opacity 0.6s ease,
+        transform 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
+        width 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
+        background-color 0.4s ease, 
+        border-radius 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
+        box-shadow 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
+        backdrop-filter 0.4s ease,
+        -webkit-backdrop-filter 0.4s ease,
+        border 0.4s ease,
+        left 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform, width, top, border-radius, opacity;
 }
 
 .site-header .container {
@@ -161,20 +166,23 @@ button {
     justify-content: space-between;
     height: 64px;
     transition: 
-        padding 0.8s cubic-bezier(0.65, 0, 0.35, 1), 
-        height 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+        padding 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
+        height 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* Specific dynamic states for desktop/tablet */
 @media (min-width: 1024px) {
     /* State: Floating Mini Card */
     .site-header.floating {
+        position: fixed; 
         top: 16px;
-        width: min(1320px, 92%);
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1440px, 94%);
         border-radius: 20px;
         border: 1px solid var(--glass-border);
-        background: rgba(255, 255, 255, 0.65); /* Higher transparency */
-        backdrop-filter: blur(20px) saturate(200%); /* Enhanced blur */
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(20px) saturate(200%);
         -webkit-backdrop-filter: blur(20px) saturate(200%);
         box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.04);
     }
@@ -183,13 +191,14 @@ button {
         background: rgba(15, 15, 15, 0.65);
         box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 
                     0 2px 8px rgba(0, 0, 0, 0.2),
-                    inset 0 0 12px rgba(255, 255, 255, 0.05); /* Inner glow */
+                    inset 0 0 12px rgba(255, 255, 255, 0.05);
     }
 
     /* State: Hidden (scrolling down) */
     .site-header.hidden {
+        position: fixed;
+        left: 50%;
         transform: translateX(-50%) translateY(-150%);
-        /* FIX: keep floating width/radius to avoid horizontal stretching during transition */
         width: min(1320px, 92%);
         border-radius: 20px;
     }
@@ -198,6 +207,47 @@ button {
         padding: 0 24px;
         height: 52px;
     }
+
+    /* Base state on desktop: match container width, ALWAYS FIXED */
+    .site-header {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1440px, 94%);
+        border-radius: 20px;
+        border: 1px solid transparent;
+        /* top will be controlled by JS for 1:1 sync */
+    }
+}
+
+.site-header.stuck {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100%;
+    border-radius: 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 1024px) {
+    .site-header.stuck {
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1440px, 94%);
+        border-radius: 20px;
+        position: fixed;
+        box-shadow: none;
+    }
+}
+
+/* Sync navbar with circular theme transition */
+.theme-transitioning .site-header {
+    transition: none !important;
 }
 
 .site-header__logo {
@@ -703,4 +753,23 @@ body::-webkit-scrollbar {
         bottom: 40px;
         right: 40px;
     }
+}
+
+/* ===========================
+   View Transitions API (Theme Toggle)
+   =========================== */
+
+/* Disable default cross-fade for the root element when theme is toggled */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+/* We always animate the 'new' state expansion, so it must always be on top */
+::view-transition-old(root) {
+    z-index: 1;
+}
+::view-transition-new(root) {
+    z-index: 9999;
 }

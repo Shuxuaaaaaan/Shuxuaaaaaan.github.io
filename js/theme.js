@@ -34,11 +34,62 @@
   /**
    * Toggle between light and dark, persist to localStorage.
    */
-  function toggleTheme() {
+  function toggleTheme(event) {
     const current = document.documentElement.getAttribute('data-theme');
     const next = current === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
-    localStorage.setItem(STORAGE_KEY, next);
+
+    const actualToggle = () => {
+      applyTheme(next);
+      localStorage.setItem(STORAGE_KEY, next);
+    };
+
+    // If View Transitions API is not supported, just toggle normally
+    if (!document.startViewTransition) {
+      actualToggle();
+      return;
+    }
+
+    // Get the click position, or default to the button's center if event is missing
+    const x = event?.clientX ?? window.innerWidth / 2;
+    const y = event?.clientY ?? window.innerHeight / 2;
+
+    // Calculate distance to the farthest corner
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    // Create the transition
+    const transition = document.startViewTransition(() => {
+      document.documentElement.classList.add('theme-transitioning');
+      actualToggle();
+    });
+
+    transition.finished.finally(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+    });
+
+    // Wait for the transition to be ready
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 400,
+          easing: 'ease-in-out',
+          pseudoElement: '::view-transition-new(root)',
+        }
+      );
+    });
   }
 
   // --- Initialise on load ---

@@ -1,8 +1,9 @@
 /**
  * Navbar Logic - Refined Dynamic States
- * - AT_TOP: scrollY < 200
- * - FLOATING: scrollY >= 200 (Active state)
- * - HIDDEN: Hidden after continuous downward scroll
+ * - INLINE: scrollY < heroHeight
+ * - STUCK: heroHeight <= scrollY < heroHeight + DWELL_DISTANCE (Full-width sticky bar)
+ * - FLOATING: scrollY >= heroHeight + DWELL_DISTANCE (Mini-card mode, Desktop only)
+ * - HIDDEN: Hidden after continuous downward scroll (Desktop only)
  */
 
 (function () {
@@ -10,70 +11,75 @@
     if (!header) return;
 
     // Configuration
-    const TOP_THRESHOLD = 200;    // Scroll distance to trigger floating mode
     const HIDE_DISTANCE = 800;    // Continuous downward scroll to hide
     const MOUSE_THRESHOLD = 60;   // Pixels from top to reveal
     const BREAKPOINT = 1024;      // Mobile breakpoint
+    const DWELL_DISTANCE = 100;   // Pixels to stay stuck before floating
 
     let lastScrollY = window.scrollY;
     let accumulatedDown = 0;
     let isMobile = window.innerWidth < BREAKPOINT;
-    let topTimer = null; // Timer for return-to-top delay
 
     function updateNavbar() {
-        if (isMobile) {
-            header.className = 'site-header';
-            return;
-        }
-
+        const isWide = window.innerWidth >= 1024;
         const currentScrollY = window.scrollY;
         const delta = currentScrollY - lastScrollY;
+        const heroHeight = window.innerHeight;
 
-        if (currentScrollY <= 20) {
-            // Reached the very top - revert to integrated style AFTER a delay
-            if (header.classList.contains('floating') || header.classList.contains('hidden')) {
-                if (!topTimer) {
-                    topTimer = setTimeout(() => {
-                        header.className = 'site-header';
-                        topTimer = null;
-                        accumulatedDown = 0;
-                    }, 1000); // 1-second delay
-                }
-            } else {
-                header.className = 'site-header';
-            }
-        } else {
-            // Not at the very top, cancel any pending return-to-top timer
-            if (topTimer) {
-                clearTimeout(topTimer);
-                topTimer = null;
-            }
+        // Configuration
+        const deskDepth = 80;    // Desktop submersion
+        const deskFloat = 16;   // Desktop floating top
+        const mobDepth = 48;     // Mobile submersion
+        const mobFloat = 0;      // Mobile sticky top (no gap)
 
-            if (currentScrollY < TOP_THRESHOLD) {
-                // In the "transition zone", keep floating if we are already floating 
-                // until we hit the <= 5px mark for the delayed return.
-                if (!header.classList.contains('floating') && !header.classList.contains('hidden')) {
-                    header.className = 'site-header';
-                }
-            } else {
-                // Past Top Threshold
+        if (isWide) {
+            // Desktop: Pure 1:1 Sync (No state-switch jumps)
+            // Initial position is heroHeight + 80px into the article content.
+            // As we scroll, top value relative to viewport decreases.
+            const targetTop = Math.max(deskFloat, (heroHeight + deskDepth) - currentScrollY);
+            header.style.top = `${targetTop}px`;
+
+            if (targetTop <= deskFloat) {
+                // At the floating threshold: Handle reveal/hide logic
                 if (delta < -10) {
-                    // Scrolling UP - instantly show as floating
+                    // Scrolling UP - reveal
                     header.className = 'site-header floating';
                     accumulatedDown = 0;
                 } else if (delta > 10) {
-                    // Scrolling DOWN
+                    // Scrolling DOWN - potential hide
                     if (header.classList.contains('floating')) {
                         accumulatedDown += delta;
                         if (accumulatedDown > HIDE_DISTANCE) {
                             header.className = 'site-header hidden';
                         }
                     } else if (!header.classList.contains('hidden')) {
-                        // Coming from AT_TOP past 200px
                         header.className = 'site-header floating';
                     }
+                } else if (!header.classList.contains('hidden')) {
+                    header.className = 'site-header floating';
                 }
+            } else {
+                // Above floating threshold: Reset to base state
+                header.className = 'site-header';
+                accumulatedDown = 0;
             }
+        } else {
+            // Mobile/Small Window: 1:1 Sync
+            const targetTop = Math.max(mobFloat, (heroHeight + mobDepth) - currentScrollY);
+            header.style.top = `${targetTop}px`;
+
+            if (targetTop <= mobFloat) {
+                header.className = 'site-header stuck';
+                accumulatedDown = 0;
+            } else {
+                header.className = 'site-header';
+                accumulatedDown = 0;
+            }
+        }
+
+        // Final reveal: Only show the header once the first JS calculation has positioned it correctly
+        if (header.style.opacity !== '1') {
+            header.style.opacity = '1';
         }
 
         lastScrollY = currentScrollY;
@@ -82,7 +88,8 @@
     // Mouse reveal logic
     window.addEventListener('mousemove', (e) => {
         if (isMobile) return;
-        if (e.clientY < MOUSE_THRESHOLD && window.scrollY > TOP_THRESHOLD) {
+        const threshold = window.innerHeight + DWELL_DISTANCE;
+        if (e.clientY < MOUSE_THRESHOLD && window.scrollY > threshold) {
             header.classList.remove('hidden');
             header.classList.add('floating');
             accumulatedDown = 0;
@@ -97,7 +104,6 @@
 
     // Throttled scroll
     let ticking = false;
-    // Global scroll listener with Lenis compatibility
     function onScrollUpdate() {
         if (!ticking) {
             window.requestAnimationFrame(() => {
@@ -108,7 +114,7 @@
         }
     }
 
-    // Connect to Lenis if it exists (for perfect synchronization)
+    // Connect to Lenis if it exists
     if (window.lenis) {
         window.lenis.on('scroll', updateNavbar);
     } else {

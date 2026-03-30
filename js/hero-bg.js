@@ -10,7 +10,21 @@
 
     var canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
-    var ctx = canvas.getContext('2d');
+    
+    // Attempt Display-P3 (Wide Gamut / HDR ready) context
+    var ctx;
+    var supportsP3 = window.matchMedia && window.matchMedia('(color-gamut: p3)').matches;
+    
+    try {
+        if (supportsP3) {
+            ctx = canvas.getContext('2d', { colorSpace: 'display-p3' });
+        } else {
+            ctx = canvas.getContext('2d');
+        }
+    } catch (e) {
+        ctx = canvas.getContext('2d');
+        supportsP3 = false;
+    }
 
     // ── State ─────────────────────────────────────────────────
     var W, H;
@@ -78,6 +92,9 @@
         var parallaxX = (mouse.x - 0.5) * 40;
         var parallaxY = (mouse.y - 0.5) * 40;
 
+        // Global entrance fade
+        var globalFade = spawnProgress;
+
         for (var i = 0; i < particles.length; i++) {
             var s = particles[i];
 
@@ -98,25 +115,41 @@
             // Skip if off-screen
             if (sx < -10 || sx > W + 10 || sy < -10 || sy > H + 10) continue;
 
+            // Fading logic: 
+            // 1. Entrance fade (spawnProgress)
+            // 2. Horizon fade (fade in as they appear in distance)
+            // 3. Near fade (fade out as they pass camera)
+            var zFade = Math.min(1, (1.5 - s.z) * 4) * Math.min(1, s.z * 5);
+            
             // Twinkle
             var twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinklePhase);
-            var alpha = s.brightness * (0.5 + twinkle * 0.5);
+            var alpha = s.brightness * (0.5 + twinkle * 0.5) * zFade * globalFade;
 
             // Size scales with proximity
             var size = s.baseSize * invZ * 0.6;
             size = Math.min(size, 3.5);
 
-            // Draw glow
+            // Draw core (Peak Brightness HDR)
             ctx.beginPath();
             ctx.arc(sx, sy, size, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255, 255, 255, ' + (alpha * 0.95) + ')';
+            if (supportsP3) {
+                // Using color() syntax for Wide Gamut/HDR peak brightness
+                ctx.fillStyle = 'color(display-p3 1 1 1 / ' + (alpha * 0.98) + ')';
+            } else {
+                ctx.fillStyle = 'rgba(255, 255, 255, ' + (alpha * 0.95) + ')';
+            }
             ctx.fill();
 
-            // Faint outer glow for brighter stars
+            // Saturated Atmospheric Glow (Vibrant Blue/Cyan in P3)
             if (alpha > 0.6 && size > 1) {
                 ctx.beginPath();
-                ctx.arc(sx, sy, size * 2.5, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(200, 220, 255, ' + (alpha * 0.08) + ')';
+                ctx.arc(sx, sy, size * 3, 0, Math.PI * 2);
+                if (supportsP3) {
+                    // Deep cyan-blue tint that pops in HDR
+                    ctx.fillStyle = 'color(display-p3 0.7 0.85 1 / ' + (alpha * 0.12) + ')';
+                } else {
+                    ctx.fillStyle = 'rgba(180, 210, 255, ' + (alpha * 0.08) + ')';
+                }
                 ctx.fill();
             }
         }
@@ -150,6 +183,9 @@
         var parallaxX = (mouse.x - 0.5) * 60;
         var parallaxY = (mouse.y - 0.5) * 30;
 
+        // Global entrance fade
+        var globalFade = spawnProgress;
+
         for (var i = 0; i < raindrops.length; i++) {
             var r = raindrops[i];
 
@@ -172,6 +208,9 @@
             var dx = Math.cos(angle) * r.length * r.depth;
             var dy = Math.sin(angle) * r.length * r.depth;
 
+            // Apply global fade by reducing stroke opacity
+            ctx.globalAlpha = globalFade;
+
             // Draw streak
             ctx.beginPath();
             ctx.moveTo(sx, sy);
@@ -180,14 +219,25 @@
             ctx.lineWidth = r.thickness * r.depth;
             ctx.lineCap = 'round';
             ctx.stroke();
+            
+            ctx.globalAlpha = 1.0;
         }
     }
 
-    // ── Animation loop ────────────────────────────────────────
+    // ── Animation state ──────────────────────────────────────
     var frameCount = 0;
+    var spawnProgress = 0;              // 0 to 1 for entrance growth
+    var isInitialised = false;
 
     function loop() {
         frameCount++;
+        
+        // Handle entrance growth
+        if (isInitialised && spawnProgress < 1) {
+            spawnProgress += 0.005;     // Adjust speed of growth (~3-4 seconds at 60fps)
+            if (spawnProgress > 1) spawnProgress = 1;
+        }
+
         var mode = getMode();
 
         // Re-init particles if mode changed
@@ -240,6 +290,7 @@
             initRain();
         }
         loop();
+        isInitialised = true;
 
         window.addEventListener('resize', resize);
         window.addEventListener('mousemove', onMouseMove);
