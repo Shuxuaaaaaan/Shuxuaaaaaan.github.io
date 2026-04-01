@@ -62,7 +62,6 @@
     }
 }
 
-/* Scroll Down Indicator */
 .hero__scroll-indicator {
     position: absolute;
     bottom: 32px;
@@ -136,7 +135,6 @@
     }
 }
 
-/* Ensure sections cover the fixed hero */
 .section, 
 .about,
 .site-footer {
@@ -144,7 +142,6 @@
     z-index: 2;
 }
 
-/* Spacer for the first section after hero */
 .site-header-wrapper {
     margin-top: 100vh;
     height: 64px;

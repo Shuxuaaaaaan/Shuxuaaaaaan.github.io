@@ -208,7 +208,6 @@
                 return;
             }
 
-            // Update page title (frontmatter title > H1 > default)
             const heading = meta.title || extractTitle(body);
             if (heading) {
                 titleEl.textContent = heading + ' — Shuxuan';
@@ -219,7 +218,6 @@
                 }
             }
 
-            // Update metadata
             const metaContainer = document.getElementById('post-meta');
             if (metaContainer) {
                 if (meta.date || meta.tag) {
@@ -248,7 +246,7 @@
                 }
             }
 
-            // Custom renderer instance (traditional way)
+            // Custom renderer instance
             const renderer = new marked.Renderer();
             renderer.image = function (token) {
                 var src = resolveUrl(token.href, rawDir);

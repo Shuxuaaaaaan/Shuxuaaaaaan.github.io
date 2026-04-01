@@ -41,7 +41,6 @@
         } catch (e) { }
     }
 
-    // ── Card HTML builder ─────────────────────────────────────
     function buildCard(item, sectionId, isPriority) {
         var a = document.createElement('a');
         var href = './?path=' + encodeURIComponent(item.path);
@@ -63,7 +62,6 @@
         a.className = 'card';
         if (item.dir === 'photos') a.classList.add('card--photo');
 
-        // Cover Image
         if (item.cover) {
             var coverDiv = document.createElement('div');
             coverDiv.className = 'card__cover';

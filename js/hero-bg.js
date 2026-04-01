@@ -98,7 +98,6 @@
         for (var i = 0; i < particles.length; i++) {
             var s = particles[i];
 
-            // Move star forward (towards camera)
             s.z -= 0.002;
             if (s.z <= 0.05) {
                 s.x = Math.random() * 2 - 1;
@@ -109,10 +108,10 @@
 
             // Project to screen with parallax
             var invZ = 1 / s.z;
-            var sx = W / 2 + s.x * W * 0.5 * invZ + parallaxX * (1 - s.z);
-            var sy = H / 2 + s.y * H * 0.5 * invZ + parallaxY * (1 - s.z);
+            var pFactor = Math.max(0, 1.5 - s.z);
+            var sx = W / 2 + s.x * W * 0.5 * invZ + parallaxX * pFactor;
+            var sy = H / 2 + s.y * H * 0.5 * invZ + parallaxY * pFactor;
 
-            // Skip if off-screen
             if (sx < -10 || sx > W + 10 || sy < -10 || sy > H + 10) continue;
 
             // Fading logic: 
@@ -169,7 +168,7 @@
             y: Math.random() * -1.5,                  // start above view
             speed: Math.random() * 3 + 2,             // fall speed
             length: Math.random() * 40 + 20,          // streak length
-            thickness: Math.random() * 1.5 + 0.5,
+            thickness: Math.random() * 2.0 + 1.2,
             color: RAIN_COLORS[Math.floor(Math.random() * RAIN_COLORS.length)],
             depth: Math.random() * 0.7 + 0.3,         // parallax depth layer
         };
@@ -189,10 +188,8 @@
         for (var i = 0; i < raindrops.length; i++) {
             var r = raindrops[i];
 
-            // Move down
             r.y += r.speed * 0.008;
 
-            // Reset when off-screen
             if (r.y > 1.3) {
                 r.y = Math.random() * -0.5 - 0.1;
                 r.x = Math.random() * 1.4 - 0.2;
@@ -200,13 +197,14 @@
             }
 
             // Screen position with parallax
-            var sx = r.x * W + parallaxX * r.depth;
-            var sy = r.y * H + parallaxY * r.depth;
+            var pFactor = (r.depth - 0.3) / 0.7; // 0 at far (0.3), 1 at near (1.0)
+            var sx = r.x * W + parallaxX * pFactor;
+            var sy = r.y * H + parallaxY * pFactor;
 
-            // Angle of rain streak
-            var angle = Math.PI / 2 + angleOffset * r.depth;
-            var dx = Math.cos(angle) * r.length * r.depth;
-            var dy = Math.sin(angle) * r.length * r.depth;
+            // Angle of rain streak (Vertical)
+            var angle = Math.PI / 2;
+            var dx = 0;
+            var dy = r.length * r.depth;
 
             // Apply global fade by reducing stroke opacity
             ctx.globalAlpha = globalFade;
