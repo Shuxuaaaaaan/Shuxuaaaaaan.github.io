@@ -22,6 +22,17 @@
         photos: { items: [], currentIndex: 0, chunkSize: 4 }
     };
 
+    // --- Version Check & Global Cache Clear ---
+    (function checkVersion() {
+        const LAST_VERSION_KEY = 'site_version_tag';
+        const lastVersion = localStorage.getItem(LAST_VERSION_KEY);
+        if (lastVersion !== VERSION) {
+            console.log('Site version updated:', lastVersion, '->', VERSION, '- Clearing session cache');
+            sessionStorage.clear();
+            localStorage.setItem(LAST_VERSION_KEY, VERSION);
+        }
+    })();
+
     // ── Cache helpers ─────────────────────────────────────────
     function cacheGet(key) {
         try {
@@ -229,7 +240,11 @@
             cacheSet(cacheKey, data);
             return data;
         } catch (e) {
-            console.error(e);
+            console.error('Failed to load content.json:', e);
+            // Fallback for local file access or network failure
+            if (window.location.protocol === 'file:') {
+                console.error('Note: Fetch is generally blocked on file:// protocol by browsers.');
+            }
             return [];
         }
     })();

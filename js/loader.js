@@ -11,6 +11,7 @@
     const MIN_ANIMATION_TIME = 1500; 
     const SAFETY_TIMEOUT = 3000;      // Don't keep the user waiting longer than 3s
     const startTime = Date.now();
+    let isRevealed = false;
 
     /**
      * Tracks critical assets (minimal floor to ensure animation visibility)
@@ -40,7 +41,16 @@
         const body = document.body;
         const loader = document.getElementById('loader');
         
-        if (!body || body.classList.contains('loaded')) return;
+        // If body doesn't exist yet, wait and try again
+        if (!body) {
+            if (Date.now() - startTime < SAFETY_TIMEOUT) {
+                setTimeout(revealSite, 50);
+            }
+            return;
+        }
+
+        if (isRevealed || body.classList.contains('loaded')) return;
+        isRevealed = true;
 
         // Start CSS slide animations
         body.classList.add('loaded');
@@ -59,9 +69,22 @@
 
     // Execution starts as soon as DOM is interactive
     const init = async () => {
-        await trackResources();
-        revealSite();
+        try {
+            await trackResources();
+        } catch (e) {
+            console.warn('Loader resource tracking failed:', e);
+        } finally {
+            revealSite();
+        }
     };
+
+    // Safety fallback: If nothing happens, force reveal after timeout
+    setTimeout(() => {
+        if (!isRevealed) {
+            console.log('Loader safety fallback triggered');
+            revealSite();
+        }
+    }, SAFETY_TIMEOUT + 500);
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
