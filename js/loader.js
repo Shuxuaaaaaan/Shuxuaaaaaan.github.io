@@ -18,28 +18,12 @@
     async function trackResources() {
         const resources = [];
 
-        // 1. Wait for Fonts
+        // 1. Wait for Fonts (Critical for Hero text)
         if (document.fonts && document.fonts.ready) {
             resources.push(document.fonts.ready);
         }
 
-        // 2. Wait for Content Data (from cards.js)
-        if (window.contentLoadedPromise) {
-            resources.push(window.contentLoadedPromise);
-        } else {
-            // If cards.js hasn't defined it yet, wait for it or timeout
-            resources.push(new Promise(resolve => {
-                let attempts = 0;
-                const check = () => {
-                    if (window.contentLoadedPromise) resolve(window.contentLoadedPromise);
-                    else if (attempts++ < 50) setTimeout(check, 20); // Check for 1s
-                    else resolve(); // Progressive enhancement
-                };
-                check();
-            }));
-        }
-
-        // 3. Minimum Display Timer
+        // 2. Minimum Display Timer (to show line expansion)
         const timerPromise = new Promise(resolve => {
             const elapsed = Date.now() - startTime;
             const remaining = Math.max(0, MIN_ANIMATION_TIME - elapsed);

@@ -217,7 +217,7 @@
     }
 
     var postsPromise = (async function () {
-        var cacheKey = 'all_posts_db_v4';
+        var cacheKey = 'all_posts_db_' + VERSION;
         var cached = cacheGet(cacheKey);
         if (cached) return cached;
 
@@ -242,7 +242,7 @@
 
     async function fetchSection(dir, trackId) {
         var state = sectionStates[dir];
-        var cacheKey = 'cards_' + dir + '_v4'; // Bump version
+        var cacheKey = 'cards_' + dir + '_' + VERSION;
         var cached = cacheGet(cacheKey);
 
         if (cached) {
@@ -256,7 +256,7 @@
 
         try {
             var allPosts = await getPosts();
-            var items = allPosts.filter(p => p.dir === dir);
+            var items = allPosts.filter(p => p.dir === dir && p.publish !== 'no');
 
             cacheSet(cacheKey, items);
             state.items = items;
