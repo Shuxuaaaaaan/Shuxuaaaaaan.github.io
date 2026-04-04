@@ -1,16 +1,25 @@
 [
   {
+    "title": "数字电子技术 数制与编码",
+    "description": "数制 数据编码",
+    "tag": "学习笔记",
+    "date": "2026-04-03",
+    "path": "posts/articles/DE_NumsystAndEncoding/DE_NumsystAndEncoding.md",
+    "dir": "articles",
+    "cover": "posts/articles/DE_NumsystAndEncoding/Cover20260403171118.webp"
+  },
+  {
     "title": "信号与系统 线性时不变系统",
     "description": "绪论 信号 系统 LTI系统特性与分析",
     "tag": "学习笔记",
     "date": "2026-03-31",
     "path": "posts/articles/SS_LTIS/SS_LTIS.md",
     "dir": "articles",
-    "cover": "posts/articles/SS_LTIS/Cover20260331161426.png"
+    "cover": "posts/articles/SS_LTIS/Cover20260331161426.webp"
   },
   {
     "title": "模拟电子技术 半导体器件",
-    "description": "半导体基础 二极管 三极管",
+    "description": "半导体基础 二极管 三极管 场效应管",
     "tag": "学习笔记",
     "date": "2026-03-27",
     "path": "posts/articles/AE_Semiconductor/AE_Semiconductor.md",

@@ -6,12 +6,13 @@
     'use strict';
 
     // ── Config ────────────────────────────────────────────────
-    var CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+    var CACHE_TTL = 60 * 60 * 1000; // 1 hour (Increased for performance)
+    var VERSION = window.SITE_VERSION || Date.now();
 
     var SECTIONS = [
-        { dir: 'articles', trackId: 'articles-track', sectionId: 'articles', btnText: '加载更多文章' },
-        { dir: 'works', trackId: 'projects-track', sectionId: 'projects', btnText: '加载更多作品' },
-        { dir: 'photos', trackId: 'photos-track', sectionId: 'photos', btnText: '加载更多相册' }
+        { dir: 'articles', trackId: 'articles-track', sectionId: 'articles', btnText: '更多文章' },
+        { dir: 'works', trackId: 'projects-track', sectionId: 'projects', btnText: '更多作品' },
+        { dir: 'photos', trackId: 'photos-track', sectionId: 'photos', btnText: '更多相册' }
     ];
 
     // ── Pagination States ─────────────────────────────────────
@@ -48,12 +49,12 @@
             href += '&fromSection=' + sectionId;
         }
         a.href = href;
-        
-        a.onclick = function(e) {
+
+        a.onclick = function (e) {
             e.preventDefault();
             if (window.openArticleModal) {
                 window.openArticleModal(item.path);
-                window.history.pushState({path: item.path}, '', href);
+                window.history.pushState({ path: item.path }, '', href);
             } else {
                 window.location.href = href; // fallback
             }
@@ -68,6 +69,9 @@
             var img = document.createElement('img');
             img.src = item.cover;
             img.loading = isPriority ? 'eager' : 'lazy';
+            if (isPriority) {
+                img.setAttribute('fetchpriority', 'high');
+            }
             coverDiv.appendChild(img);
             a.appendChild(coverDiv);
         }
@@ -95,7 +99,7 @@
         content.appendChild(title);
         content.appendChild(desc);
         content.appendChild(date);
-        
+
         a.appendChild(content);
 
         return a;
@@ -122,7 +126,7 @@
         var nextItems = state.items.slice(state.currentIndex, state.currentIndex + state.chunkSize);
         if (nextItems.length === 0) return;
 
-        var sectionInfo = SECTIONS.find(function(s) { return s.dir === dir; });
+        var sectionInfo = SECTIONS.find(function (s) { return s.dir === dir; });
         var sectionId = sectionInfo ? sectionInfo.sectionId : '';
 
         var isFirstChunk = (state.currentIndex === 0);
@@ -138,17 +142,15 @@
 
         if (!isFirstChunk) {
             // For "Load More", fade in all 4 cards together
-            requestAnimationFrame(function() {
-                requestAnimationFrame(function() {
-                    newCards.forEach(function(card) {
-                        card.classList.add('visible');
-                    });
+            requestAnimationFrame(function () {
+                newCards.forEach(function (card) {
+                    card.classList.add('visible');
                 });
             });
         } else {
             // For the first chunk, they are already visible via card--instant
         }
-        
+
         state.currentIndex += state.chunkSize;
         updateLoadMoreButton(dir);
     }
@@ -156,7 +158,7 @@
     function updateLoadMoreButton(dir) {
         var sectionInfo = SECTIONS.find(s => s.dir === dir);
         if (!sectionInfo) return;
-        
+
         var section = document.getElementById(sectionInfo.sectionId);
         if (!section) return;
 
@@ -172,27 +174,14 @@
                 btn.id = btnId;
                 btn.className = 'load-more-btn';
                 btn.textContent = sectionInfo.btnText;
-                btn.onclick = function() { renderSectionChunk(dir, sectionInfo.trackId); };
+                btn.onclick = function () { renderSectionChunk(dir, sectionInfo.trackId); };
                 var container = section.querySelector('.container');
                 if (container) container.appendChild(btn);
             }
         }
     }
 
-    function observeCards(container) {
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.15 });
-
-        container.querySelectorAll('.card').forEach(function (card) {
-            observer.observe(card);
-        });
-    }
+    // Removed: observeCards (Dead code)
 
     function showTrackLoading(trackId) {
         var track = document.getElementById(trackId);
@@ -214,6 +203,9 @@
     // ── Data Fetching & Preloading ───────────────────────────
     function preloadPriorityImages(allPosts) {
         SECTIONS.forEach(function (sec) {
+            // Skip preloading for 'photos' section as requested
+            if (sec.dir === 'photos') return;
+
             var items = allPosts.filter(p => p.dir === sec.dir).slice(0, 4);
             items.forEach(function (item) {
                 if (item.cover) {
@@ -224,27 +216,27 @@
         });
     }
 
-    var postsPromise = null;
-    async function getPosts() {
-        if (!postsPromise) {
-            postsPromise = (async function () {
-                var cacheKey = 'all_posts_db_v4'; // Bump for structure change
-                var cached = cacheGet(cacheKey);
-                if (cached) return cached;
+    var postsPromise = (async function () {
+        var cacheKey = 'all_posts_db_v4';
+        var cached = cacheGet(cacheKey);
+        if (cached) return cached;
 
-                try {
-                    var res = await fetch('./content.json?t=' + Date.now());
-                    if (!res.ok) throw new Error('Failed to load content.json');
-                    var data = await res.json();
-                    preloadPriorityImages(data);
-                    cacheSet(cacheKey, data);
-                    return data;
-                } catch (e) {
-                    console.error(e);
-                    return [];
-                }
-            })();
+        try {
+            var res = await fetch('./content.json?v=' + VERSION);
+            if (!res.ok) throw new Error('Failed to load content.json');
+            var data = await res.json();
+            preloadPriorityImages(data);
+            cacheSet(cacheKey, data);
+            return data;
+        } catch (e) {
+            console.error(e);
+            return [];
         }
+    })();
+    // Export for loader sync
+    window.contentLoadedPromise = postsPromise;
+
+    async function getPosts() {
         return await postsPromise;
     }
 

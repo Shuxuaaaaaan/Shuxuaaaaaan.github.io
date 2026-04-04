@@ -9,7 +9,8 @@
 (function () {
     'use strict';
 
-    var CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+    var CACHE_TTL = 60 * 60 * 1000; // 1 hour
+    var VERSION = window.SITE_VERSION || Date.now();
 
     const contentEl = document.getElementById('post-content');
     const titleEl = document.querySelector('title');
@@ -175,7 +176,7 @@
             // Simplified fetch: everything is now relative to the site root
             var rawBase = './';
             var rawUrl = rawBase + mdPath;
-            rawUrl += '?t=' + Date.now();
+            rawUrl += '?v=' + VERSION;
 
             // Directory containing the md file (for resolving relative images)
             var pathParts = mdPath.split('/');
@@ -194,9 +195,15 @@
 
             // Dynamically load KaTeX if needed
             if (mdText.includes('$')) {
-                loadStylesheet('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css');
-                await loadScript('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js');
-                await loadScript('https://cdn.jsdelivr.net/npm/marked-katex-extension/lib/index.umd.js');
+                loadStylesheet('./css/vendor/katex.min.css');
+                await loadScript('./js/vendor/katex.min.js');
+                await loadScript('./js/vendor/marked-katex.min.js');
+            }
+
+            // Dynamically load Prism if needed
+            if (mdText.includes('```')) {
+                loadStylesheet('./css/vendor/prism-okaidia.min.css');
+                await loadScript('./js/vendor/prism.min.js');
             }
 
             // Parse frontmatter & strip it from body
@@ -230,10 +237,52 @@
                 }
             }
 
-            // Enable extensions if available
-            if (typeof markedFootnote === 'function') {
-                marked.use(markedFootnote());
-            }
+            // --- Obsidian-flavored Extensions ---
+            const highlightExtension = {
+                name: 'highlight',
+                level: 'inline',
+                start(src) { return src.indexOf('=='); },
+                tokenizer(src) {
+                    const match = src.match(/^==([\s\S]+?)==/);
+                    if (match) {
+                        return {
+                            type: 'highlight',
+                            raw: match[0],
+                            text: match[1]
+                        };
+                    }
+                },
+                renderer(token) {
+                    return `<mark>${token.text}</mark>`;
+                }
+            };
+
+            const commentExtension = {
+                name: 'comment',
+                level: 'inline',
+                start(src) { return src.indexOf('%%'); },
+                tokenizer(src) {
+                    const match = src.match(/^%%([\s\S]*?)%%/);
+                    if (match) {
+                        return {
+                            type: 'comment',
+                            raw: match[0],
+                            text: '' // Remove content
+                        };
+                    }
+                },
+                renderer(token) {
+                    return ''; // Render nothing
+                }
+            };
+
+            // Register extensions
+            marked.use({ 
+                extensions: [
+                    highlightExtension, 
+                    commentExtension
+                ]
+            });
 
             // Enable KaTeX extension
             if (typeof markedKatex !== 'undefined') {
@@ -248,6 +297,67 @@
 
             // Custom renderer instance
             const renderer = new marked.Renderer();
+            
+            // --- Enhanced Blockquote (Obsidian Callouts) ---
+            renderer.blockquote = function (token) {
+                const text = token.text || '';
+                // Match [!type] optionally followed by +/- and an optional title
+                const match = text.match(/^([\s\S]*?)\[!(\w+)\]([+-])?(.*)?([\s\S]*)$/);
+                
+                if (match) {
+                    const type = match[2].toLowerCase();
+                    const fold = match[3]; // '+' for open, '-' for closed, undefined for static
+                    let title = match[4] ? match[4].trim() : type.charAt(0).toUpperCase() + type.slice(1);
+                    const body = match[5].trim();
+                    
+                    const isFoldable = fold !== undefined;
+                    const isCollapsed = fold === '-';
+                    
+                    const calloutClass = `callout callout--${type} ${isFoldable ? 'is-foldable' : ''} ${isCollapsed ? 'is-collapsed' : ''}`;
+                    
+                    // Simple icons as SVGs to avoid dependencies
+                    const icons = {
+                        info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+                        tip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6m-6-3h6m-7-3h8a5 5 0 0 0 0-10 5 5 0 0 0-8 4v6z"/></svg>',
+                        warning: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+                        danger: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+                        success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+                        question: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+                        todo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><polyline points="9 11 12 14 22 4"/></svg>'
+                    };
+                    const icon = icons[type] || icons.info;
+                    
+                    return `
+                    <div class="${calloutClass}" data-type="${type}">
+                        <div class="callout-title">
+                            <span class="callout-icon">${icon}</span>
+                            <span class="callout-title-inner">${title}</span>
+                            ${isFoldable ? '<span class="callout-fold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>' : ''}
+                        </div>
+                        <div class="callout-content">${body}</div>
+                    </div>`;
+                }
+                return `<blockquote>${text}</blockquote>`;
+            };
+
+            // --- Enhanced Code Blocks ---
+            renderer.code = function (token) {
+                const lang = (token.lang || '').match(/\S*/)[0];
+                const code = token.text;
+                
+                return `
+                <div class="code-block" data-lang="${lang}">
+                    <div class="code-block-header">
+                        <span class="code-block-lang">${lang || 'text'}</span>
+                        <button class="code-block-copy" aria-label="复制代码" onclick="copyCode(this)">
+                            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            <svg class="icon-check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </button>
+                    </div>
+                    <pre><code class="language-${lang}">${code}</code></pre>
+                </div>`;
+            };
+
             renderer.image = function (token) {
                 var src = resolveUrl(token.href, rawDir);
                 var alt = token.text || '';
@@ -281,7 +391,9 @@
             if (meta.title && !extractTitle(body)) {
                 finalBody = '# ' + meta.title + '\n\n' + finalBody;
             }
-            var htmlContent = marked.parse(finalBody, { renderer: renderer });
+            
+            // Parse body
+            const htmlContent = marked.parse(finalBody, { renderer: renderer });
 
             // If it's a photo album, extract image-description pairs
             var isPhotoAlbum = mdPath.includes('/photos/');
@@ -339,6 +451,11 @@
                         img.loading = 'lazy';
                     }
                 });
+            }
+
+            // Trigger Prism highlighting
+            if (window.Prism) {
+                Prism.highlightAllUnder(contentEl);
             }
 
             // Fetch list and update navigation
@@ -428,6 +545,37 @@
         }
     };
 
+    // --- Interaction Helpers ---
+    window.copyCode = function(btn) {
+        const pre = btn.closest('.code-block').querySelector('pre code');
+        const text = pre.innerText;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            const btnContent = btn.innerHTML;
+            const copyIcon = btn.querySelector('.icon-copy');
+            const checkIcon = btn.querySelector('.icon-check');
+            
+            copyIcon.classList.add('hidden');
+            checkIcon.classList.remove('hidden');
+            btn.classList.add('success');
+            
+            setTimeout(() => {
+                copyIcon.classList.remove('hidden');
+                checkIcon.classList.add('hidden');
+                btn.classList.remove('success');
+            }, 2000);
+        });
+    };
+
+    // Global listener for callout folding
+    document.addEventListener('click', function(e) {
+        const calloutTitle = e.target.closest('.callout.is-foldable .callout-title');
+        if (calloutTitle) {
+            const callout = calloutTitle.parentElement;
+            callout.classList.toggle('is-collapsed');
+        }
+    });
+
     // ── Photo Wall & Lightbox Logic ─────────────────────────────
     function renderPhotoWall(pairs) {
         var wall = document.createElement('div');
@@ -488,15 +636,13 @@
                     return parseInt(a.target.dataset.idx) - parseInt(b.target.dataset.idx);
                 });
                 
-                intersecting.forEach(function(entry, i) {
-                    setTimeout(function() {
-                        var img = entry.target.querySelector('img');
-                        if (img && img.dataset.src) {
-                            img.src = img.dataset.src;
-                            img.removeAttribute('data-src');
-                        }
-                        entry.target.classList.add('visible');
-                    }, i * 100);
+                intersecting.forEach(function(entry) {
+                    var img = entry.target.querySelector('img');
+                    if (img && img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    entry.target.classList.add('visible');
                     obs.unobserve(entry.target);
                 });
             }, { rootMargin: '50px 0px', threshold: 0.01 });
@@ -604,7 +750,7 @@
                 } catch (e) { }
 
                 try {
-                    var res = await fetch('./content.json?t=' + Date.now());
+                    var res = await fetch('./content.json?v=' + VERSION);
                     if (!res.ok) throw new Error('Failed to load content.json');
                     var data = await res.json();
                     try {

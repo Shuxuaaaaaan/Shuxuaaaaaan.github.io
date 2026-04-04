@@ -64,17 +64,11 @@
                 accumulatedDown = 0;
             }
         } else {
-            // Mobile/Small Window: 1:1 Sync
-            const targetTop = Math.max(mobFloat, (heroHeight + mobDepth) - currentScrollY);
-            header.style.top = `${targetTop}px`;
-
-            if (targetTop <= mobFloat) {
-                header.className = 'site-header stuck';
-                accumulatedDown = 0;
-            } else {
-                header.className = 'site-header';
-                accumulatedDown = 0;
-            }
+            // Mobile/Small Window: Use CSS Sticky (Native & Jitter-free)
+            header.style.top = ''; 
+            header.style.opacity = '1';
+            header.className = 'site-header'; 
+            return;
         }
 
         // Final reveal: Only show the header once the first JS calculation has positioned it correctly

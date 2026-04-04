@@ -1,52 +1,119 @@
 /* ===========================
+   Fonts
+   =========================== */
+
+/* MiSans - Core Weights (woff2 only) */
+@font-face {
+    font-family: 'MiSans';
+    src: url('vendor/fonts/MiSans-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MiSans';
+    src: url('vendor/fonts/MiSans-Demibold.woff2') format('woff2');
+    font-weight: 650;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MiSans';
+    src: url('vendor/fonts/MiSans-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Roboto Slab - Variable Font (Hero) */
+@font-face {
+    font-family: 'Roboto Slab';
+    src: url('vendor/fonts/RobotoSlab-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ===========================
    CSS Variables & Reset
    =========================== */
 
 :root {
-    /* Light theme (default) */
+    /* Core Theme Colors */
+    --primary: #007aff;
+    --primary-rgb: 0, 122, 255;
+    --accent: #007aff;
+
+    /* Backgrounds */
     --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
-    --bg-card: #f8f9fa;
+    --bg-secondary: #f5f5f7;
+    --bg-card: #ffffff;
+    --bg-surface: #ffffff;
     --bg-footer: #f5f5f7;
-    --bg-about: #f8f9fa;
-    --text-primary: #1a1a1a;
-    --text-secondary: #666666;
-    --border-color: rgba(0, 0, 0, 0.06);
-    --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.06);
-    --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.10);
+    --bg-about: #f5f5f7;
+
+    /* Text */
+    --text-primary: #1d1d1f;
+    --text-secondary: #86868b;
+    --text-muted: #afafb5;
+
+    /* UI Elements */
+    --border-color: rgba(0, 0, 0, 0.1);
+    --border-subtle: rgba(0, 0, 0, 0.06);
+    --divider: rgba(0, 0, 0, 0.08);
+
+    /* Shadows & Effects */
+    --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.04);
+    --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.08);
     --glass-bg: rgba(255, 255, 255, 0.72);
     --glass-border: rgba(255, 255, 255, 0.18);
-    --accent: #1a1a1a;
     --tag-bg: rgba(0, 0, 0, 0.05);
     --scrollbar-thumb: rgba(0, 0, 0, 0.15);
-    --divider: rgba(0, 0, 0, 0.08);
-    --text-glow: 0 0 10px rgba(0, 0, 0, 0.1);
-    --control-glow: 0 0 12px rgba(0, 0, 0, 0.15);
+
+    /* Utilities */
+    --text-glow: 0 0 10px rgba(0, 122, 255, 0.1);
+    --control-glow: 0 0 12px rgba(0, 122, 255, 0.15);
     --mx: 0;
     --my: 0;
 }
 
 [data-theme="dark"] {
-    --bg-primary: #0f0f0f;
-    --bg-secondary: #161616;
-    --bg-card: #1a1a1a;
-    --bg-footer: #141414;
-    --bg-about: #141414;
-    --text-primary: #ededed;
-    --text-secondary: #a0a0a0;
-    --border-color: rgba(255, 255, 255, 0.06);
-    --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.3);
-    --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.45);
-    --glass-bg: rgba(15, 15, 15, 0.78);
-    --glass-border: rgba(255, 255, 255, 0.06);
-    --accent: #ededed;
-    --tag-bg: rgba(255, 255, 255, 0.08);
-    --scrollbar-thumb: rgba(255, 255, 255, 0.15);
-    --divider: rgba(255, 255, 255, 0.08);
-    --text-glow: 0 0 15px rgba(255, 255, 255, 0.3);
-    --control-glow: 0 0 18px rgba(255, 255, 255, 0.45);
-    --mx: 0;
-    --my: 0;
+    /* Core Theme Colors */
+    --primary: #0a84ff;
+    --primary-rgb: 10, 132, 255;
+    --accent: #0a84ff;
+
+    /* Backgrounds */
+    --bg-primary: #000000;
+    --bg-secondary: #161617;
+    --bg-card: #1c1c1e;
+    --bg-surface: #1c1c1e;
+    --bg-footer: #080808;
+    --bg-about: #080808;
+
+    /* Text */
+    --text-primary: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --text-muted: #6e6e73;
+
+    /* UI Elements */
+    --border-color: rgba(255, 255, 255, 0.12);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --divider: rgba(255, 255, 255, 0.1);
+
+    /* Shadows & Effects */
+    --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.4);
+    --glass-bg: rgba(28, 28, 30, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --tag-bg: rgba(255, 255, 255, 0.1);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+
+    /* Utilities */
+    --text-glow: 0 0 15px rgba(10, 132, 255, 0.3);
+    --control-glow: 0 0 18px rgba(10, 132, 255, 0.45);
 }
 
 /* ===========================
@@ -62,13 +129,13 @@
 }
 
 html {
-    scroll-padding-top: 110px; /* Offset for fixed header */
+    scroll-padding-top: 110px;
+    /* Offset for fixed header */
     -webkit-text-size-adjust: 100%;
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        'Helvetica Neue', Arial, sans-serif;
+    font-family: 'MiSans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -146,13 +213,13 @@ button {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-bottom: 1px solid transparent;
-    transition: 
+    transition:
         opacity 0.6s ease,
-        transform 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
-        width 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
-        background-color 0.4s ease, 
-        border-radius 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
-        box-shadow 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
+        transform 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+        width 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+        background-color 0.4s ease,
+        border-radius 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+        box-shadow 0.5s cubic-bezier(0.65, 0, 0.35, 1),
         backdrop-filter 0.4s ease,
         -webkit-backdrop-filter 0.4s ease,
         border 0.4s ease,
@@ -160,21 +227,88 @@ button {
     will-change: transform, width, top, border-radius, opacity;
 }
 
+
 .site-header .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 64px;
-    transition: 
-        padding 0.5s cubic-bezier(0.65, 0, 0.35, 1), 
+    transition:
+        padding 0.5s cubic-bezier(0.65, 0, 0.35, 1),
         height 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Mobile/Touch Fix & Two-Row Layout */
+@media (max-width: 1023px) {
+    .site-header {
+        position: sticky !important;
+        top: 0 !important;
+        margin-top: 100vh !important;
+        /* Starts after hero */
+        transform: none !important;
+        width: 100% !important;
+        left: 0 !important;
+        border-radius: 0 !important;
+        opacity: 1 !important;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px) saturate(180%);
+        -webkit-backdrop-filter: blur(12px) saturate(180%);
+        border-bottom: 1px solid var(--glass-border);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        z-index: 1000;
+    }
+
+    .site-header .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto !important; /* Force auto height on mobile */
+        padding: 14px 16px;
+        gap: 8px;
+        position: relative;
+    }
+
+    .site-header__logo {
+        font-size: 1.15rem;
+        width: 100%;
+        text-align: center;
+        padding-bottom: 2px;
+        font-weight: 800;
+        /* Match title styling */
+    }
+
+    .site-header__nav {
+        width: 100%;
+        justify-content: center;
+        gap: 20px;
+        padding-top: 4px;
+        /* Removed border-top divider */
+    }
+
+    .site-header__nav a {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        /* Bright color */
+    }
+
+    .site-header .theme-toggle {
+        position: absolute;
+        right: 12px;
+        bottom: 8px;
+        /* Alignment with nav row */
+        width: 36px;
+        height: 36px;
+    }
 }
 
 /* Specific dynamic states for desktop/tablet */
 @media (min-width: 1024px) {
+
     /* State: Floating Mini Card */
     .site-header.floating {
-        position: fixed; 
+        position: fixed;
         top: 16px;
         left: 50%;
         transform: translateX(-50%);
@@ -189,9 +323,9 @@ button {
 
     [data-theme="dark"] .site-header.floating {
         background: rgba(15, 15, 15, 0.65);
-        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 
-                    0 2px 8px rgba(0, 0, 0, 0.2),
-                    inset 0 0 12px rgba(255, 255, 255, 0.05);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5),
+            0 2px 8px rgba(0, 0, 0, 0.2),
+            inset 0 0 12px rgba(255, 255, 255, 0.05);
     }
 
     /* State: Hidden (scrolling down) */
@@ -254,6 +388,11 @@ button {
     font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: -0.02em;
+    transition: color 0.25s ease;
+}
+
+.site-header__logo:hover {
+    color: var(--primary);
 }
 
 .site-header__nav {
@@ -264,9 +403,9 @@ button {
 
 .site-header__nav a {
     font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    transition: color 0.25s ease;
+    font-weight: 700;
+    color: var(--text-primary);
+    transition: all 0.25s ease;
     position: relative;
 }
 
@@ -277,12 +416,12 @@ button {
     left: 0;
     width: 0;
     height: 1.5px;
-    background: var(--text-primary);
+    background: var(--primary);
     transition: width 0.3s ease;
 }
 
 .site-header__nav a:hover {
-    color: var(--text-primary);
+    color: var(--primary);
 }
 
 .site-header__nav a:hover::after {
@@ -410,13 +549,17 @@ button {
    =========================== */
 
 /* Hide native scrollbar on the main page completely (Lenis still handles smooth scroll) */
-html, body {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+html,
+body {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 body::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
+    display: none;
+    /* Chrome, Safari and Opera */
 }
 
 /* ===========================
@@ -451,9 +594,11 @@ body::-webkit-scrollbar {
 }
 
 .back-to-top:hover {
-    color: var(--text-primary);
+    color: #ffffff;
+    background: var(--primary);
+    border-color: var(--primary);
     transform: translateY(-4px);
-    box-shadow: var(--shadow-card-hover), var(--control-glow);
+    box-shadow: 0 12px 32px rgba(var(--primary-rgb), 0.25), var(--control-glow);
 }
 
 .back-to-top svg {
@@ -486,7 +631,7 @@ body::-webkit-scrollbar {
         flex-direction: column;
         gap: 0;
     }
-    
+
     .photo-wall__column {
         width: 100%;
     }
@@ -508,14 +653,18 @@ body::-webkit-scrollbar {
     /* Performance optimization: isolate rendering and allow browser to skip off-screen paints */
     contain: layout paint;
     content-visibility: auto;
-    contain-intrinsic-size: 1px 300px; /* Placeholder size for better scrollbar stability */
+    contain-intrinsic-size: 1px 300px;
+    /* Placeholder size for better scrollbar stability */
 }
 
 /* Pseudo element for GPU-accelerated hover shadow */
 .photo-wall__item::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     border-radius: inherit;
     box-shadow: var(--shadow-card-hover);
     opacity: 0;
@@ -770,6 +919,7 @@ body::-webkit-scrollbar {
 ::view-transition-old(root) {
     z-index: 1;
 }
+
 ::view-transition-new(root) {
     z-index: 9999;
 }
