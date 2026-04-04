@@ -192,6 +192,17 @@ body.loading {
 }
 
 /* ===========================
+   Base Layout Stability
+   =========================== */
+.hero {
+    min-height: 100vh;
+}
+
+.about {
+    min-height: 100vh;
+}
+
+/* ===========================
    About Section - Bento Grid v3 (Skills & Research)
    =========================== */
 
@@ -656,6 +667,7 @@ body.loading {
     grid-template-columns: repeat(4, 1fr);
     gap: 32px;
     padding: 16px 0 24px;
+    min-height: 400px; /* Prevent collapse during fetch */
 }
 
 @media (max-width: 1200px) {

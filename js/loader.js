@@ -7,23 +7,18 @@
     'use strict';
 
     // Configuration
-    // Changed to 2500ms(2.5s): 0.5s (pre-delay) + 2s (expansion)
-    const MIN_ANIMATION_TIME = 2500; 
-    const SAFETY_TIMEOUT = 5000;      // Don't keep the user waiting longer than 5s
+    // Reduced to 1500ms(1.5s) for a snappier reveal while keeping the premium line animation
+    const MIN_ANIMATION_TIME = 1500; 
+    const SAFETY_TIMEOUT = 3000;      // Don't keep the user waiting longer than 3s
     const startTime = Date.now();
 
     /**
-     * Tracks critical assets (fonts, data, images)
+     * Tracks critical assets (minimal floor to ensure animation visibility)
      */
     async function trackResources() {
         const resources = [];
 
-        // 1. Wait for Fonts (Critical for Hero text)
-        if (document.fonts && document.fonts.ready) {
-            resources.push(document.fonts.ready);
-        }
-
-        // 2. Minimum Display Timer (to show line expansion)
+        // 1. Minimum Display Timer (to show line expansion)
         const timerPromise = new Promise(resolve => {
             const elapsed = Date.now() - startTime;
             const remaining = Math.max(0, MIN_ANIMATION_TIME - elapsed);
@@ -31,7 +26,7 @@
         });
         resources.push(timerPromise);
 
-        // Wait for all or safety timeout
+        // Wait for timer or safety timeout
         await Promise.race([
             Promise.all(resources),
             new Promise(resolve => setTimeout(resolve, SAFETY_TIMEOUT))

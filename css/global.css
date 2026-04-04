@@ -27,10 +27,10 @@
     font-display: swap;
 }
 
-/* Roboto Slab - Variable Font (Hero) */
+/* Roboto Slab - Variable Font (Hero) - Optimized WOFF2 version */
 @font-face {
     font-family: 'Roboto Slab';
-    src: url('vendor/fonts/RobotoSlab-VariableFont_wght.ttf') format('truetype');
+    src: url('vendor/fonts/RobotoSlab-VariableFont_wght.woff2') format('woff2');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;

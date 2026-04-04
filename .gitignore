@@ -3,6 +3,7 @@ local_preview.py
 compress_images.py
 cleanup_albums.py
 migrate_images.py
+analyze_perf.py
 
 # Raw images (originals, not for deployment)
 imagesraw/
