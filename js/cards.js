@@ -79,10 +79,8 @@
             coverDiv.className = 'card__cover';
             var img = document.createElement('img');
             img.src = item.cover;
-            img.loading = isPriority ? 'eager' : 'lazy';
-            if (isPriority) {
-                img.setAttribute('fetchpriority', 'high');
-            }
+            img.loading = 'lazy'; // Force lazy loading for all images as requested
+
             coverDiv.appendChild(img);
             a.appendChild(coverDiv);
         }
@@ -236,7 +234,8 @@
             var res = await fetch('./content.json?v=' + VERSION);
             if (!res.ok) throw new Error('Failed to load content.json');
             var data = await res.json();
-            preloadPriorityImages(data);
+            // preloadPriorityImages(data); // Disabled to prioritize page content loading
+
             cacheSet(cacheKey, data);
             return data;
         } catch (e) {

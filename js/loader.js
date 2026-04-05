@@ -8,7 +8,7 @@
 
     // Configuration
     // Reduced to 1500ms(1.5s) for a snappier reveal while keeping the premium line animation
-    const MIN_ANIMATION_TIME = 1500; 
+    const MIN_ANIMATION_TIME = 1500;
     const SAFETY_TIMEOUT = 3000;      // Don't keep the user waiting longer than 3s
     const startTime = Date.now();
     let isRevealed = false;
@@ -40,7 +40,7 @@
     function revealSite() {
         const body = document.body;
         const loader = document.getElementById('loader');
-        
+
         // If body doesn't exist yet, wait and try again
         if (!body) {
             if (Date.now() - startTime < SAFETY_TIMEOUT) {
@@ -61,7 +61,7 @@
                 loader.remove();
             }
             body.classList.remove('loading');
-            
+
             // Dispatch event for other listeners (parallax, Lenis, etc)
             window.dispatchEvent(new CustomEvent('site-reveal-complete'));
         }, 1000);

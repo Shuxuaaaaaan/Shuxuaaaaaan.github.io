@@ -61,7 +61,6 @@
 
 /* Headings */
 .markdown-body h1 {
-    font-family: 'MiSans', sans-serif;
     font-size: 2.5rem;
     font-weight: 700; /* Bold */
     margin: 0 0 24px;
@@ -70,7 +69,6 @@
 }
 
 .markdown-body h2 {
-    font-family: 'MiSans', sans-serif;
     font-size: 2rem;
     font-weight: 650; /* Demibold */
     margin: 48px 0 16px;
@@ -80,7 +78,6 @@
 }
 
 .markdown-body h3 {
-    font-family: 'MiSans', sans-serif;
     font-size: 1.5rem;
     font-weight: 600; /* Semibold */
     margin: 36px 0 12px;
@@ -89,7 +86,6 @@
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
-    font-family: 'MiSans', sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
     margin: 28px 0 8px;
