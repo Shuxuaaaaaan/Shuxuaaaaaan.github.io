@@ -7,10 +7,12 @@
     'use strict';
 
     // Configuration
-    // Reduced to 1500ms(1.5s) for a snappier reveal while keeping the premium line animation
-    const MIN_ANIMATION_TIME = 1500;
-    const SAFETY_TIMEOUT = 3000;      // Don't keep the user waiting longer than 3s
-    const startTime = Date.now();
+    // Always play loader animation on each homepage open.
+    const MIN_ANIMATION_TIME = 1200;
+    const PANEL_ANIMATION_TIME = 720;
+    const SAFETY_TIMEOUT = 2300;
+    let startTime = 0;
+    let safetyTimer = null;
     let isRevealed = false;
 
     /**
@@ -55,20 +57,42 @@
         // Start CSS slide animations
         body.classList.add('loaded');
 
-        // Cleanup DOM after slide completes (1.0s in CSS)
-        setTimeout(() => {
+        const cleanup = () => {
             if (loader) {
                 loader.remove();
             }
+            body.classList.remove('loader-active');
             body.classList.remove('loading');
 
             // Dispatch event for other listeners (parallax, Lenis, etc)
             window.dispatchEvent(new CustomEvent('site-reveal-complete'));
-        }, 1000);
+        };
+
+        if (PANEL_ANIMATION_TIME > 0) {
+            setTimeout(cleanup, PANEL_ANIMATION_TIME);
+        } else {
+            cleanup();
+        }
     }
 
     // Execution starts as soon as DOM is interactive
     const init = async () => {
+        const body = document.body;
+        if (!body) return;
+
+        startTime = Date.now();
+        body.classList.add('loader-active');
+
+        if (safetyTimer) {
+            clearTimeout(safetyTimer);
+        }
+        safetyTimer = setTimeout(() => {
+            if (!isRevealed) {
+                console.log('Loader safety fallback triggered');
+                revealSite();
+            }
+        }, SAFETY_TIMEOUT + 500);
+
         try {
             await trackResources();
         } catch (e) {
@@ -77,14 +101,6 @@
             revealSite();
         }
     };
-
-    // Safety fallback: If nothing happens, force reveal after timeout
-    setTimeout(() => {
-        if (!isRevealed) {
-            console.log('Loader safety fallback triggered');
-            revealSite();
-        }
-    }, SAFETY_TIMEOUT + 500);
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

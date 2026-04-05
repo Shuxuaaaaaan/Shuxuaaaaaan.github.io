@@ -11,10 +11,110 @@
 
     var CACHE_TTL = 60 * 60 * 1000; // 1 hour
     var VERSION = window.SITE_VERSION || Date.now();
+    var POSTS_CACHE_KEY = 'all_posts_db_' + VERSION;
 
     const contentEl = document.getElementById('post-content');
     const titleEl = document.querySelector('title');
     let modalLenis = null;
+    let markedExtensionsRegistered = false;
+    let markedKatexRegistered = false;
+
+    const highlightExtension = {
+        name: 'highlight',
+        level: 'inline',
+        start(src) { return src.indexOf('=='); },
+        tokenizer(src) {
+            const match = src.match(/^==([\s\S]+?)==/);
+            if (match) {
+                return {
+                    type: 'highlight',
+                    raw: match[0],
+                    text: match[1]
+                };
+            }
+        },
+        renderer(token) {
+            return `<mark>${token.text}</mark>`;
+        }
+    };
+
+    const commentExtension = {
+        name: 'comment',
+        level: 'inline',
+        start(src) { return src.indexOf('%%'); },
+        tokenizer(src) {
+            const match = src.match(/^%%([\s\S]*?)%%/);
+            if (match) {
+                return {
+                    type: 'comment',
+                    raw: match[0],
+                    text: ''
+                };
+            }
+        },
+        renderer() {
+            return '';
+        }
+    };
+
+    function ensureMarkedExtensions() {
+        if (markedExtensionsRegistered) return;
+        marked.use({
+            extensions: [
+                highlightExtension,
+                commentExtension
+            ]
+        });
+        markedExtensionsRegistered = true;
+    }
+
+    function ensureKatexExtension() {
+        if (markedKatexRegistered || typeof markedKatex === 'undefined') return;
+        const katexExt = (typeof markedKatex === 'function') ? markedKatex : markedKatex.default;
+        if (!katexExt) return;
+        marked.use(katexExt({
+            throwOnError: false,
+            nonStandard: true
+        }));
+        markedKatexRegistered = true;
+    }
+
+    function readSessionCache(key) {
+        try {
+            var raw = sessionStorage.getItem(key);
+            if (!raw) return null;
+            var obj = JSON.parse(raw);
+            if (Date.now() - obj.ts > CACHE_TTL) return null;
+            return obj.data;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function writeSessionCache(key, data) {
+        try {
+            sessionStorage.setItem(key, JSON.stringify({ ts: Date.now(), data: data }));
+        } catch (e) { }
+    }
+
+    function loadPostsDatabase() {
+        if (window.contentLoadedPromise && typeof window.contentLoadedPromise.then === 'function') {
+            return window.contentLoadedPromise;
+        }
+
+        window.contentLoadedPromise = (async function () {
+            try {
+                var res = await fetch('./content.json?v=' + VERSION);
+                if (!res.ok) throw new Error('Failed to load content.json');
+                return await res.json();
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
+        })();
+
+        return window.contentLoadedPromise;
+    }
 
     function initModalLenis() {
         const modalBody = document.getElementById('modal-body');
@@ -237,63 +337,8 @@
                 }
             }
 
-            // --- Obsidian-flavored Extensions ---
-            const highlightExtension = {
-                name: 'highlight',
-                level: 'inline',
-                start(src) { return src.indexOf('=='); },
-                tokenizer(src) {
-                    const match = src.match(/^==([\s\S]+?)==/);
-                    if (match) {
-                        return {
-                            type: 'highlight',
-                            raw: match[0],
-                            text: match[1]
-                        };
-                    }
-                },
-                renderer(token) {
-                    return `<mark>${token.text}</mark>`;
-                }
-            };
-
-            const commentExtension = {
-                name: 'comment',
-                level: 'inline',
-                start(src) { return src.indexOf('%%'); },
-                tokenizer(src) {
-                    const match = src.match(/^%%([\s\S]*?)%%/);
-                    if (match) {
-                        return {
-                            type: 'comment',
-                            raw: match[0],
-                            text: '' // Remove content
-                        };
-                    }
-                },
-                renderer(token) {
-                    return ''; // Render nothing
-                }
-            };
-
-            // Register extensions
-            marked.use({ 
-                extensions: [
-                    highlightExtension, 
-                    commentExtension
-                ]
-            });
-
-            // Enable KaTeX extension
-            if (typeof markedKatex !== 'undefined') {
-                const katexExt = (typeof markedKatex === 'function') ? markedKatex : markedKatex.default;
-                if (katexExt) {
-                    marked.use(katexExt({
-                        throwOnError: false,
-                        nonStandard: true
-                    }));
-                }
-            }
+            ensureMarkedExtensions();
+            ensureKatexExtension();
 
             // Custom renderer instance
             const renderer = new marked.Renderer();
@@ -576,8 +621,112 @@
         }
     });
 
+    var galleryState = {
+        lightbox: null,
+        lbImg: null,
+        lbCaption: null,
+        lbCounter: null,
+        pairs: [],
+        currentIdx: 0,
+        keydownBound: false
+    };
+
+    function updateLightbox() {
+        if (!galleryState.lightbox || !galleryState.pairs.length) return;
+        var pair = galleryState.pairs[galleryState.currentIdx];
+        galleryState.lbImg.src = pair.src;
+        galleryState.lbImg.alt = pair.alt || '';
+        galleryState.lbCaption.textContent = pair.desc || '';
+        galleryState.lbCounter.textContent = (galleryState.currentIdx + 1) + ' / ' + galleryState.pairs.length;
+    }
+
+    function openLightbox(idx) {
+        if (!galleryState.lightbox || !galleryState.pairs.length) return;
+        galleryState.currentIdx = idx;
+        updateLightbox();
+        galleryState.lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        if (!galleryState.lightbox) return;
+        galleryState.lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function nextLightboxImage(e) {
+        if (e) e.stopPropagation();
+        if (!galleryState.pairs.length) return;
+        galleryState.currentIdx = (galleryState.currentIdx + 1) % galleryState.pairs.length;
+        updateLightbox();
+    }
+
+    function prevLightboxImage(e) {
+        if (e) e.stopPropagation();
+        if (!galleryState.pairs.length) return;
+        galleryState.currentIdx = (galleryState.currentIdx - 1 + galleryState.pairs.length) % galleryState.pairs.length;
+        updateLightbox();
+    }
+
+    function ensureLightbox() {
+        if (galleryState.lightbox) return;
+
+        var lightbox = document.createElement('div');
+        lightbox.className = 'lightbox';
+        lightbox.innerHTML = `
+            <div class="lightbox__overlay"></div>
+            <button class="lightbox__close" aria-label="关闭">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <button class="lightbox__btn lightbox__btn--prev" aria-label="上一张">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="lightbox__btn lightbox__btn--next" aria-label="下一张">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <div class="lightbox__content">
+                <img class="lightbox__img" src="" alt="" />
+                <div class="lightbox__caption"></div>
+                <div class="lightbox__counter"></div>
+            </div>
+        `;
+        document.body.appendChild(lightbox);
+
+        galleryState.lightbox = lightbox;
+        galleryState.lbImg = lightbox.querySelector('.lightbox__img');
+        galleryState.lbCaption = lightbox.querySelector('.lightbox__caption');
+        galleryState.lbCounter = lightbox.querySelector('.lightbox__counter');
+
+        lightbox.onclick = function (e) {
+            if (!e.target.closest('.lightbox__btn')) {
+                closeLightbox();
+            }
+        };
+
+        lightbox.querySelector('.lightbox__btn--next').onclick = nextLightboxImage;
+        lightbox.querySelector('.lightbox__btn--prev').onclick = prevLightboxImage;
+        lightbox.querySelector('.lightbox__close').onclick = function (e) {
+            e.stopPropagation();
+            closeLightbox();
+        };
+
+        if (!galleryState.keydownBound) {
+            document.addEventListener('keydown', function (e) {
+                if (!galleryState.lightbox || !galleryState.lightbox.classList.contains('active')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextLightboxImage();
+                if (e.key === 'ArrowLeft') prevLightboxImage();
+            });
+            galleryState.keydownBound = true;
+        }
+    }
+
     // ── Photo Wall & Lightbox Logic ─────────────────────────────
     function renderPhotoWall(pairs) {
+        ensureLightbox();
+        galleryState.pairs = pairs;
+        galleryState.currentIdx = 0;
+
         var wall = document.createElement('div');
         wall.className = 'photo-wall';
         
@@ -655,82 +804,6 @@
             var items = wall.querySelectorAll('.photo-wall__item');
             items.forEach(function(item) { item.classList.add('visible'); });
         }
-
-        // Build Lightbox Modal
-        var lightbox = document.createElement('div');
-        lightbox.className = 'lightbox';
-        lightbox.innerHTML = `
-            <div class="lightbox__overlay"></div>
-            <button class="lightbox__close" aria-label="关闭">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            <button class="lightbox__btn lightbox__btn--prev" aria-label="上一张">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <button class="lightbox__btn lightbox__btn--next" aria-label="下一张">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-            </button>
-            <div class="lightbox__content">
-                <img class="lightbox__img" src="" alt="" />
-                <div class="lightbox__caption"></div>
-                <div class="lightbox__counter"></div>
-            </div>
-        `;
-        document.body.appendChild(lightbox);
-        
-        var currentIdx = 0;
-        var lbImg = lightbox.querySelector('.lightbox__img');
-        var lbCaption = lightbox.querySelector('.lightbox__caption');
-        var lbCounter = lightbox.querySelector('.lightbox__counter');
-        
-        function updateLightbox() {
-            var pair = pairs[currentIdx];
-            lbImg.src = pair.src;
-            lbImg.alt = pair.alt || '';
-            lbCaption.textContent = pair.desc || '';
-            lbCounter.textContent = (currentIdx + 1) + ' / ' + pairs.length;
-        }
-        
-        function openLightbox(idx) {
-            currentIdx = idx;
-            updateLightbox();
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        
-        function nextImage(e) {
-            if (e) e.stopPropagation();
-            currentIdx = (currentIdx + 1) % pairs.length;
-            updateLightbox();
-        }
-        
-        function prevImage(e) {
-            if (e) e.stopPropagation();
-            currentIdx = (currentIdx - 1 + pairs.length) % pairs.length;
-            updateLightbox();
-        }
-        
-        // Close on any click outside the nav buttons
-        lightbox.onclick = function(e) {
-            if (!e.target.closest('.lightbox__btn')) {
-                closeLightbox();
-            }
-        };
-        
-        lightbox.querySelector('.lightbox__btn--next').onclick = nextImage;
-        lightbox.querySelector('.lightbox__btn--prev').onclick = prevImage;
-        
-        document.addEventListener('keydown', function(e) {
-            if (!lightbox.classList.contains('active')) return;
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') nextImage();
-            if (e.key === 'ArrowLeft') prevImage();
-        });
     }
 
     // ── Fetch article list and cache ────────────────────────────
@@ -738,24 +811,12 @@
     async function getPosts() {
         if (!postsPromise) {
             postsPromise = (async function () {
-                var cacheKey = 'all_posts_db_v4'; // Bump for structure change
-                try {
-                    var raw = sessionStorage.getItem(cacheKey);
-                    if (raw) {
-                        var obj = JSON.parse(raw);
-                        if (Date.now() - obj.ts <= CACHE_TTL) {
-                            return obj.data;
-                        }
-                    }
-                } catch (e) { }
+                var cached = readSessionCache(POSTS_CACHE_KEY);
+                if (cached) return cached;
 
                 try {
-                    var res = await fetch('./content.json?v=' + VERSION);
-                    if (!res.ok) throw new Error('Failed to load content.json');
-                    var data = await res.json();
-                    try {
-                        sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: data }));
-                    } catch (e) { }
+                    var data = await loadPostsDatabase();
+                    writeSessionCache(POSTS_CACHE_KEY, data);
                     return data;
                 } catch (e) {
                     console.error(e);
