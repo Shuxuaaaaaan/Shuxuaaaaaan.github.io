@@ -7,7 +7,6 @@ date: 2026-03-24
 rss: no
 cover: Cover20260327165053.webp
 ---
-黑沙滩，白浪，玄武岩，苔原
 
 <div class="video-container">
 <iframe src="//bilibili.com/blackboard/html5mobileplayer.html?isOutside=true&aid=1604147867&bvid=BV1pm421H7qZ&cid=1531324429&p=1&hideCoverInfo=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>

@@ -1,5 +1,15 @@
 [
   {
+    "title": "Say My Name - ODESZA",
+    "description": "歌曲分享",
+    "tag": "随想",
+    "date": "2026-05-03",
+    "path": "posts/articles/SayMyName/SayMyName.md",
+    "dir": "articles",
+    "publish": "yes",
+    "cover": "posts/articles/SayMyName/Cover20260503232803.webp"
+  },
+  {
     "title": "数字电子技术 数制与编码",
     "description": "数制 数据编码",
     "tag": "学习笔记",

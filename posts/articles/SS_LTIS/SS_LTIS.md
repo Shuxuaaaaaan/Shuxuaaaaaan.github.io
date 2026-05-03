@@ -188,7 +188,7 @@ $$u(t) = \int_{-\infty}^{t} \delta(\tau) d\tau$$
 ![[Pasted image 20260331170603.png]]
 
 框图表示
-![[Cover20260331161426.webp]]
+![[posts/articles/SS_LTIS/Cover20260331161426.webp]]
 
 已知系统框图求系统方程
 

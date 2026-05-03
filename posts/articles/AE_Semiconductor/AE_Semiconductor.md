@@ -29,7 +29,7 @@ cover: DSC02213.webp
 
 #### N型半导体
 
-在本征半导体中，掺入微量高价元素。
+在本征半导体中，掺入微量+5价元素。
 
 它与周围原子组成共价键时，存在多余价电子，不受共价键的束缚。因此，它只要得到较少的能量就能成为自由电子，并留下带正电的杂质离子，该离子不能参与导电。
 
@@ -44,7 +44,7 @@ N 型半导体中，自由电子称为多数载流子，空穴称为少数载流
 
 #### P型半导体
 
-在本征半导体中，掺入微量低价元素。
+在本征半导体中，掺入微量+3价元素。
 
 它与周围原子组成共价键时，缺少电子，形成空穴。其它共价键的电子只需摆脱原子核的束缚，就转至空位上，形成空穴。因此，在较少能量下就可形成空穴，并留下带负电的杂质离子，该离子不能参与导电，
 
@@ -248,14 +248,14 @@ $$\bar{\beta} = \frac{I_C}{I_B} $$
 $$I_C = \bar{\beta} I_B + (1+\bar{\beta}) I_{CBO} = \bar{\beta} I_B + I_{CEO} $$
 
 穿透电流：
-$$I_{CEO} = (1+\bar{\beta}) I_{CBO} \tag{1-16}$$
+$$I_{CEO} = (1+\bar{\beta}) I_{CBO} $$
 共射极交流电流放大系数
-$$\beta = \left. \frac{\Delta I_C}{\Delta I_B} \right|_{U_{CE}=\text{常数}} \tag{1-17}$$
+$$\beta = \left. \frac{\Delta I_C}{\Delta I_B} \right|_{U_{CE}=\text{常数}} $$
 
 共基极交流电流放大系数
-$$\alpha = \left. \frac{\Delta I_C}{\Delta I_E} \right|_{U_{CB}=\text{常数}} \tag{1-18}$$
+$$\alpha = \left. \frac{\Delta I_C}{\Delta I_E} \right|_{U_{CB}=\text{常数}} $$
 关系：
-$$\beta = \frac{\Delta I_C}{\Delta I_B} = \frac{\Delta I_C}{\Delta I_E - \Delta I_C} = \frac{\Delta I_C / \Delta I_E}{1 - \Delta I_C / \Delta I_E} = \frac{\alpha}{1-\alpha} \tag{1-19}$$
+$$\beta = \frac{\Delta I_C}{\Delta I_B} = \frac{\Delta I_C}{\Delta I_E - \Delta I_C} = \frac{\Delta I_C / \Delta I_E}{1 - \Delta I_C / \Delta I_E} = \frac{\alpha}{1-\alpha} $$
 
 存在近似关系，不严格区分直流系数与交流系数
 
