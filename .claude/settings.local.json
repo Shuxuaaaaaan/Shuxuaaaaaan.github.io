@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Recurse \"D:\\\\Users\\\\Documents\\\\电子设计大赛\\\\2025全国电赛\")",
+      "Bash(Select-Object FullName, Length, LastWriteTime)",
+      "Bash(Format-Table -AutoSize -Wrap)",
+      "Bash(Get-ChildItem -Recurse -Depth 2 -Name \"D:\\\\Users\\\\Documents\\\\Microcontroller\\\\STM32\\\\25DSGS_SoftwareProgram\")",
+      "Bash(Select-Object -First 200)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Users\\\\Documents\\\\Projects\\\\Shuxuaaaaaan.github.io\\\\posts\" -Recurse -Name)",
+      "Bash(Sort-Object)",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\Users\\\\Documents\\\\Projects\\\\Shuxuaaaaaan.github.io\\\\posts\" -Recurse | Where-Object { $_.LastWriteTime -gt [DateTime]::new\\(2026, 1, 1\\) } | Sort-Object LastWriteTime -Descending | Format-Table Name, LastWriteTime -AutoSize)",
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(\"D:\\\\Users\\\\Documents\\\\电子设计大赛\\\\2025全国电赛\\\\制作\\\\作品报告.docx\"\\); $entry = $zip.GetEntry\\(\"word/document.xml\"\\); $reader = New-Object System.IO.StreamReader\\($entry.Open\\(\\)\\); $xml = $reader.ReadToEnd\\(\\); $reader.Close\\(\\); $zip.Dispose\\(\\); $xml -replace '<[^>]+>', ' ' -replace '\\\\s+', ' ' | Select-Object -First 2000)",
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(\"D:\\\\Users\\\\Documents\\\\电子设计大赛\\\\2025全国电赛\\\\制作\\\\报告完整.docx\"\\); $entry = $zip.GetEntry\\(\"word/document.xml\"\\); $reader = New-Object System.IO.StreamReader\\($entry.Open\\(\\)\\); $xml = $reader.ReadToEnd\\(\\); $reader.Close\\(\\); $zip.Dispose\\(\\); $xml -replace '<[^>]+>', ' ' -replace '\\\\s+', ' ' | Select-Object -First 2000)",
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(\"D:\\\\Users\\\\Documents\\\\电子设计大赛\\\\2025全国电赛\\\\制作\\\\2025电赛报告.docx\"\\); $entry = $zip.GetEntry\\(\"word/document.xml\"\\); $reader = New-Object System.IO.StreamReader\\($entry.Open\\(\\)\\); $xml = $reader.ReadToEnd\\(\\); $reader.Close\\(\\); $zip.Dispose\\(\\); $xml -replace '<[^>]+>', ' ' -replace '\\\\s+', ' ' | Select-Object -First 2000)",
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(\"D:\\\\Users\\\\Documents\\\\电子设计大赛\\\\2025全国电赛\\\\制作\\\\03039G_s.docx\"\\); $entry = $zip.GetEntry\\(\"word/document.xml\"\\); $reader = New-Object System.IO.StreamReader\\($entry.Open\\(\\)\\); $xml = $reader.ReadToEnd\\(\\); $reader.Close\\(\\); $zip.Dispose\\(\\); $xml -replace '<[^>]+>', ' ' -replace '\\\\s+', ' ' | Select-Object -First 1000)",
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(\"D:\\\\Users\\\\Documents\\\\电子设计大赛\\\\2025全国电赛\\\\训练\\\\工科联赛设计报告.docx\"\\); $entry = $zip.GetEntry\\(\"word/document.xml\"\\); $reader = New-Object System.IO.StreamReader\\($entry.Open\\(\\)\\); $xml = $reader.ReadToEnd\\(\\); $reader.Close\\(\\); $zip.Dispose\\(\\); $xml -replace '<[^>]+>', ' ' -replace '\\\\s+', ' ' | Select-Object -First 500)",
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(\"D:\\\\Users\\\\Documents\\\\电子设计大赛\\\\2025全国电赛\\\\制作\\\\03039G\\\\宣传资料.docx\"\\); $entry = $zip.GetEntry\\(\"word/document.xml\"\\); $reader = New-Object System.IO.StreamReader\\($entry.Open\\(\\)\\); $xml = $reader.ReadToEnd\\(\\); $reader.Close\\(\\); $zip.Dispose\\(\\); $xml -replace '<[^>]+>', ' ' -replace '\\\\s+', ' ' | Select-Object -First 500)"
+    ]
+  }
+}

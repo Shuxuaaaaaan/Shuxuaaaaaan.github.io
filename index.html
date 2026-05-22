@@ -67,7 +67,7 @@
           <a href="#projects">作品</a>
           <a href="#photos">相册</a>
           <a href="#about">关于</a>
-          <a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" title="开往-友链接力">开往</a>
+          <!-- <a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" title="开往-友链接力">开往</a> -->
         </nav>
         <button class="theme-toggle" onclick="toggleTheme(event)" aria-label="切换主题">
           <!-- Sun icon (shown in dark mode) -->
@@ -132,26 +132,26 @@
       <h2 class="about__heading fade-up">关于</h2>
       <div class="about__divider fade-up"></div>
 
-      <div class="bento-grid fade-up">
-        <!-- Row 1: About Me (8) + Education (4) -->
-        <div class="bento-card col-span-8 bento-card--hero bento-card--primary">
+      <div class="about-prose fade-up">
+
+        <!-- Intro -->
+        <div class="about-intro">
           <div class="avatar-placeholder" style="flex-shrink: 0;">
             <img src="./assets/img/avatar.webp" alt="Avatar" loading="lazy">
           </div>
-          <div class="hero-content">
-            <div class="bento-card__label"> </div>
-            <h3 class="hero-huge-title">About Me.</h3>
-            <div class="bento-card__text"
-              style="font-weight: 600; font-size: 1.25rem; color: #fff; margin-bottom: 4px;">嗨，我是 Shuxuan 👋</div>
+          <div class="about-intro__text">
+            <p class="about-intro__name">嗨，我是 Shuxuan 👋</p>
+            <p class="about-intro__desc"> </p>
           </div>
         </div>
 
-        <div class="bento-card col-span-4 bento-card--surface">
-          <div class="bento-card__label"> </div>
-          <div class="bento-card__title">教育经历</div>
+        <!-- Education -->
+        <div class="about-section">
+          <h4 class="about-section__title">教育经历</h4>
           <div class="education-list">
             <a href="https://www.xidian.edu.cn/" target="_blank" rel="noopener noreferrer" class="education-card">
-              <img src="./assets/img/XDUlogo.webp" alt="Xidian University Logo" class="education-card__bg" loading="lazy">
+              <img src="./assets/img/XDUlogo.webp" alt="Xidian University Logo" class="education-card__bg"
+                loading="lazy">
               <p class="education-card__year">2024 至今</p>
               <h4 class="education-card__school">西安电子科技大学</h4>
               <p class="education-card__desc">测控技术与仪器 本科</p>
@@ -165,226 +165,38 @@
           </div>
         </div>
 
-        <!-- Row 2: Skills (6) + Learning (6) -->
-        <div class="bento-card col-span-6 bento-card--surface">
-          <div class="bento-card__label"> </div>
-          <div class="bento-card__title">专业技能</div>
-          <div class="skills-container" style="margin-top: 20px;">
-            <!-- 嵌入式 -->
-            <div class="bento-cat">
-              <div class="bento-cat-header">
-                <span class="bento-cat-header__title">嵌入式</span>
-              </div>
-              <div class="tag-cloud">
-                <div class="tag-cloud-track">
-                  <span class="bento-tag">Arduino</span>
-                  <span class="bento-tag">STM32</span>
-                  <span class="bento-tag">TImsp</span>
-                  <span class="bento-tag">ESP32</span>
-                  <span class="bento-tag">Raspberry Pi</span>
-                  <span class="bento-tag">AMD Zynq SoC</span>
-                  <!-- Duplicate for loop -->
-                  <span class="bento-tag">Arduino</span>
-                  <span class="bento-tag">STM32</span>
-                  <span class="bento-tag">TImsp</span>
-                  <span class="bento-tag">ESP32</span>
-                  <span class="bento-tag">Raspberry Pi</span>
-                  <span class="bento-tag">AMD Zynq SoC</span>
-                </div>
-              </div>
-            </div>
-            <!-- 硬件 -->
-            <div class="bento-cat">
-              <div class="bento-cat-header">
-                <span class="bento-cat-header__title">硬件</span>
-              </div>
-              <div class="tag-cloud">
-                <div class="tag-cloud-track">
-                  <span class="bento-tag">Altium Designer</span>
-                  <span class="bento-tag">嘉立创LCEDA</span>
-                  <span class="bento-tag">Solidworks Design</span>
-                  <span class="bento-tag">Multisim</span>
-                  <span class="bento-tag">AMD Vivado</span>
-                  <!-- Duplicate for loop -->
-                  <span class="bento-tag">Altium Designer</span>
-                  <span class="bento-tag">嘉立创LCEDA</span>
-                  <span class="bento-tag">Solidworks Design</span>
-                  <span class="bento-tag">Multisim</span>
-                  <span class="bento-tag">AMD Vivado</span>
-                </div>
-              </div>
-            </div>
-            <!-- 软件 -->
-            <div class="bento-cat">
-              <div class="bento-cat-header">
-                <span class="bento-cat-header__title">软件</span>
-              </div>
-              <div class="tag-cloud">
-                <div class="tag-cloud-track">
-                  <span class="bento-tag">C</span>
-                  <span class="bento-tag">Python</span>
-                  <span class="bento-tag">FreeRTOS</span>
-                  <span class="bento-tag">Linux</span>
-                  <span class="bento-tag">AMD Vitis</span>
-                  <span class="bento-tag">CubeMX toolkit</span>
-                  <span class="bento-tag">OpenCV</span>
-                  <span class="bento-tag">OpenMV</span>
-                  <span class="bento-tag">Intel OpenVINO</span>
-                  <!-- Duplicate for loop -->
-                  <span class="bento-tag">C</span>
-                  <span class="bento-tag">Python</span>
-                  <span class="bento-tag">FreeRTOS</span>
-                  <span class="bento-tag">Linux</span>
-                  <span class="bento-tag">AMD Vitis</span>
-                  <span class="bento-tag">CubeMX toolkit</span>
-                  <span class="bento-tag">OpenCV</span>
-                  <span class="bento-tag">OpenMV</span>
-                  <span class="bento-tag">Intel OpenVINO</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Skills -->
+        <div class="about-section">
+          <h4 class="about-section__title">专业技能</h4>
+          <p class="about-section__text">电子电路技术，电子测量与控制，嵌入式系统，信息感知、传输与处理。</p>
         </div>
 
-        <!-- Learning Directions (6) -->
-        <div class="bento-card col-span-6 bento-card--surface">
-          <div class="bento-card__label"> </div>
-          <div class="bento-card__title">学习方向</div>
-          <div class="skills-container" style="margin-top: 20px;">
-            <div class="bento-cat">
-              <div class="bento-cat-header">
-                <span class="bento-cat-header__title">电子电路技术</span>
-              </div>
-              <div class="tag-cloud">
-                <div class="tag-cloud-track">
-                  <span class="bento-tag">模拟电子技术</span>
-                  <span class="bento-tag">数字电子技术</span>
-                  <span class="bento-tag">电磁场与电磁波</span>
-                  <span class="bento-tag">射频电路分析与检测</span>
-                  <span class="bento-tag">电子测量与误差分析</span>
-                  <span class="bento-tag">传感技术与信号调理</span>
-                  <!-- Duplicate for loop -->
-                  <span class="bento-tag">模拟电子技术</span>
-                  <span class="bento-tag">数字电子技术</span>
-                  <span class="bento-tag">电磁场与电磁波</span>
-                  <span class="bento-tag">射频电路分析与检测</span>
-                  <span class="bento-tag">电子测量与误差分析</span>
-                  <span class="bento-tag">传感技术与信号调理</span>
-                </div>
-              </div>
-            </div>
-            <div class="bento-cat">
-              <div class="bento-cat-header">
-                <span class="bento-cat-header__title">软件技术</span>
-              </div>
-              <div class="tag-cloud">
-                <div class="tag-cloud-track">
-                  <span class="bento-tag">软件设计基础</span>
-                  <span class="bento-tag">微机原理与嵌入式系统设计</span>
-                  <span class="bento-tag">自动测试与总线技术</span>
-                  <span class="bento-tag">计算机网络</span>
-                  <span class="bento-tag">计算机控制技术</span>
-                  <span class="bento-tag">机器视觉技术</span>
-                  <!-- Duplicate for loop -->
-                  <span class="bento-tag">软件设计基础</span>
-                  <span class="bento-tag">微机原理与嵌入式系统设计</span>
-                  <span class="bento-tag">自动测试与总线技术</span>
-                  <span class="bento-tag">计算机网络</span>
-                  <span class="bento-tag">计算机控制技术</span>
-                  <span class="bento-tag">机器视觉技术</span>
-                </div>
-              </div>
-            </div>
-            <div class="bento-cat">
-              <div class="bento-cat-header">
-                <span class="bento-cat-header__title">理论框架</span>
-              </div>
-              <div class="tag-cloud">
-                <div class="tag-cloud-track">
-                  <span class="bento-tag">信号与系统</span>
-                  <span class="bento-tag">自动控制理论</span>
-                  <span class="bento-tag">数字信号处理</span>
-                  <span class="bento-tag">随机信号分析</span>
-                  <span class="bento-tag">模式识别</span>
-                  <span class="bento-tag">机器学习</span>
-                  <!-- Duplicate for loop -->
-                  <span class="bento-tag">信号与系统</span>
-                  <span class="bento-tag">自动控制理论</span>
-                  <span class="bento-tag">数字信号处理</span>
-                  <span class="bento-tag">随机信号分析</span>
-                  <span class="bento-tag">模式识别</span>
-                  <span class="bento-tag">机器学习</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 3: Hobbies (10, short) + Contact (2) -->
-        <div class="bento-card col-span-10 bento-card--surface bento-card--short">
-          <div class="bento-card__label"> </div>
-          <div class="bento-card__title">日常</div>
-          <div class="bento-grid"
-            style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 8px; padding-left: 12px;">
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <h4 style="font-weight: 800; font-size: 0.95rem;">摄影</h4>
-              </div>
-              <p style="font-size: 0.85rem; color: var(--text-secondary);">风光、静物。记录光影流转。</p>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <h4 style="font-weight: 800; font-size: 0.95rem;">创造</h4>
-              </div>
-              <p style="font-size: 0.85rem; color: var(--text-secondary);">搓点小玩意，享受创造的乐趣。</p>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <h4 style="font-weight: 800; font-size: 0.95rem;">探索</h4>
-              </div>
-              <p style="font-size: 0.85rem; color: var(--text-secondary);">保持对世界的好奇心。</p>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <h4 style="font-weight: 800; font-size: 0.95rem;">游戏</h4>
-              </div>
-              <p style="font-size: 0.85rem; color: var(--text-secondary);">Minecraft, Cities: Skylines 2, Stellaris...
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bento-card col-span-2 bento-card--surface bento-card--short">
-          <div class="bento-card__label"> </div>
-          <div class="bento-card__title">联系</div>
-          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
-            <a href="https://github.com/shuxuaaaaaan" target="_blank"
-              style="display: flex; align-items: center; gap: 10px; color: var(--text-secondary); transition: all 0.3s ease;"
-              onmouseover="this.style.color='var(--text-primary)'; this.style.transform='translateX(4px)'"
-              onmouseout="this.style.color='var(--text-secondary)'; this.style.transform='none'">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#005bc1" stroke-width="2"
+        <!-- Contact -->
+        <div class="about-section">
+          <h4 class="about-section__title">联系方式</h4>
+          <div class="about-contact">
+            <a href="https://github.com/shuxuaaaaaan" target="_blank" rel="noopener noreferrer"
+              class="about-contact__link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
                 <path
                   d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7a3.37 3.37 0 0 0-.94 2.58V22">
                 </path>
               </svg>
-              <span style="font-size: 0.9rem; font-weight: 600;">GitHub</span>
+              GitHub
             </a>
-            <a href="mailto:sxjia_xdu@foxmail.com"
-              style="display: flex; align-items: center; gap: 10px; color: var(--text-secondary); transition: all 0.3s ease;"
-              onmouseover="this.style.color='var(--text-primary)'; this.style.transform='translateX(4px)'"
-              onmouseout="this.style.color='var(--text-secondary)'; this.style.transform='none'">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#005bc1" stroke-width="2"
+            <a href="mailto:sxjia_xdu@foxmail.com" class="about-contact__link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                 <polyline points="22,6 12,13 2,6"></polyline>
               </svg>
-              <span style="font-size: 0.9rem; font-weight: 600;">Email</span>
+              sxjia_xdu@foxmail.com
             </a>
           </div>
         </div>
 
-      </div> <!-- End bento-grid -->
+      </div> <!-- End about-prose -->
     </div> <!-- End container -->
   </section>
 

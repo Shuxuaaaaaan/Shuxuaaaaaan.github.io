@@ -1,5 +1,5 @@
 /**
- * cards.js — Auto-discover markdown files via GitHub API & render cards
+ * cards.js — 读取 content.json 并渲染卡片列表
  */
 
 (function () {
@@ -270,7 +270,7 @@
 
         try {
             var allPosts = await getPosts();
-            var items = allPosts.filter(p => p.dir === dir && p.publish !== 'no');
+            var items = allPosts.filter(p => p.dir === dir);
 
             cacheSet(cacheKey, items);
             state.items = items;
