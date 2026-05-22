@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="./css/global.css?v4" />
   <link rel="stylesheet" href="./css/index.css?v4" />
   <link rel="stylesheet" href="./css/markdown.css?v4" />
+  <link rel="stylesheet" href="./css/bgm.css?v4" />
   <!-- Critical versioning -->
   <script src="./js/version.js"></script>
   <!-- Inline critical theme script to avoid FOUC -->
@@ -30,6 +31,8 @@
   <script defer src="./js/hero-bg.js"></script>
   <!-- UI Loader Script (Priority) -->
   <script src="./js/loader.js"></script>
+  <!-- Background Music Controller -->
+  <script defer src="./js/bgm.js"></script>
 </head>
 
 <body class="loading">
@@ -49,6 +52,7 @@
     <canvas id="hero-canvas" aria-hidden="true"></canvas>
     <h1 class="hero__greeting">AD ASTRA PER ASPERA.</h1>
     <p class="hero__subtitle">泥嚎! 这里是Shuxuan的主页~</p>
+    <canvas id="hero-canvas-front" aria-hidden="true"></canvas>
     <div class="hero__scroll-indicator" aria-hidden="true">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -149,14 +153,14 @@
         <div class="about-section">
           <h4 class="about-section__title">教育经历</h4>
           <div class="education-list">
-            <a href="https://www.xidian.edu.cn/" target="_blank" rel="noopener noreferrer" class="education-card">
+            <a href="https://www.xidian.edu.cn/" target="_blank" rel="noopener noreferrer" class="education-card education-card--xdu">
               <img src="./assets/img/XDUlogo.webp" alt="Xidian University Logo" class="education-card__bg"
                 loading="lazy">
               <p class="education-card__year">2024 至今</p>
               <h4 class="education-card__school">西安电子科技大学</h4>
               <p class="education-card__desc">测控技术与仪器 本科</p>
             </a>
-            <a href="https://www.nwnusch.cn/" target="_blank" rel="noopener noreferrer" class="education-card">
+            <a href="https://www.nwnusch.cn/" target="_blank" rel="noopener noreferrer" class="education-card education-card--nwnu">
               <img src="./assets/img/NWNUSCHlogo.webp" alt="NWNU Logo" class="education-card__bg" loading="lazy">
               <p class="education-card__year">2021 - 2024</p>
               <h4 class="education-card__school">西北师范大学附属中学</h4>

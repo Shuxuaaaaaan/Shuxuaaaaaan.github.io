@@ -1,0 +1,171 @@
+/* ==========================================================================
+   BGM Player Style - Refined Left-to-Right Glassmorphic Controller
+   ========================================================================== */
+
+.bgm-player {
+    position: fixed;
+    bottom: 40px;
+    left: 40px;
+    z-index: 1002;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 6px 14px;
+    
+    /* Simplified High-contrast Minimalist Premium Semi-solid Background */
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.3s ease, 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease;
+    will-change: opacity, transform;
+    opacity: 0;
+    transform: translateY(30px) translateZ(0);
+    pointer-events: none;
+    user-select: none;
+    max-width: 280px;
+    overflow: hidden;
+}
+
+/* Dark mode adjustment matching [data-theme="dark"] .site-header.floating */
+[data-theme="dark"] .bgm-player {
+    background: rgba(20, 20, 20, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.bgm-player.ready {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+    pointer-events: auto;
+}
+
+/* When article details modal is active, hide player cleanly and disable mouse interactions */
+body.modal-open .bgm-player {
+    opacity: 0 !important;
+    transform: translateY(20px) translateZ(0) !important;
+    pointer-events: none !important;
+}
+
+/* 1. Left Side: Mini Audio Visualizer */
+.bgm-player__visualizer {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 16px;
+    width: 25px;
+    flex-shrink: 0;
+    cursor: default;
+}
+
+.bgm-player__bar {
+    width: 2.5px;
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 1px;
+    transform: scaleY(0.15);
+    transform-origin: center;
+    /* Removed transition on transform to avoid rendering lag with JS damping visualizer */
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    will-change: transform;
+}
+
+/* When paused, the visualizer bars settle to a minimal level and bounce back elegantly */
+.bgm-player:not(.playing) .bgm-player__bar {
+    background-color: var(--text-secondary);
+    opacity: 0.6;
+    transform: scaleY(0.15) !important;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.3s ease, 
+                opacity 0.3s ease;
+}
+
+/* 2. Central Section: Meta Info */
+.bgm-player__info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+    margin-right: 12px;
+    width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: default;
+}
+
+.bgm-player__title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
+}
+
+.bgm-player__artist {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 1.2;
+    margin-top: 2px;
+    opacity: 0.85;
+}
+
+/* 3. Right Side: Premium Play / Pause Circle Control Button */
+.bgm-player__btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--tag-bg);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.bgm-player__btn:hover {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+    transform: scale(1.08) translateZ(0);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3), var(--control-glow);
+}
+
+.bgm-player__btn:active {
+    transform: scale(0.95) translateZ(0);
+}
+
+.bgm-player__btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+}
+
+/* Visualizer dynamic hover glow interaction */
+.bgm-player:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 0 1px var(--primary);
+}
+
+[data-theme="dark"] .bgm-player:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), 0 0 1px var(--primary);
+}
+
+/* Responsive Style Adjustments */
+@media (max-width: 768px) {
+    .bgm-player {
+        bottom: 24px;
+        left: 24px;
+        padding: 6px 12px;
+        /* Keep full elegant horizontal layout on mobile without breaking */
+    }
+}

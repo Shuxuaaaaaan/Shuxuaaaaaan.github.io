@@ -1,5 +1,15 @@
 [
   {
+    "title": "电路模型探究装置",
+    "description": "2025年全国大学生电子设计竞赛G题作品，获全国二等奖。思路与方案简析。",
+    "tag": "项目",
+    "date": "2026-05-22",
+    "path": "posts/works/NUEDC2025G/NUEDC2025G.md",
+    "dir": "works",
+    "publish": "yes",
+    "cover": "posts/works/NUEDC2025G/Cover20260328124032.webp"
+  },
+  {
     "title": "Say My Name - ODESZA",
     "description": "歌曲分享",
     "tag": "随想",
@@ -138,16 +148,6 @@
     "dir": "photos",
     "publish": "yes",
     "cover": "posts/photos/24SummerLanzhou/DSC06107.webp"
-  },
-  {
-    "title": "电路模型探究装置",
-    "description": "2025年全国大学生电子设计竞赛G题作品，获全国二等奖。思路与方案简析。",
-    "tag": "项目",
-    "date": "2026-03-12",
-    "path": "posts/works/NUEDC2025G/NUEDC2025G.md",
-    "dir": "works",
-    "publish": "yes",
-    "cover": "posts/works/NUEDC2025G/Cover20260328124032.webp"
   },
   {
     "title": "Wild Child - Enya",
